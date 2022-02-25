@@ -3,7 +3,11 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
-        <entry key="..\:/cool_yeah/Year-3/VI/IF3210 PBD/Tubes 1/if3210-2022-android-64/app/src/main/res/layout/activity_main.xml" value="0.25" />
+        <entry key="..\:/cool_yeah/Year-3/VI/IF3210 PBD/Tubes 1/if3210-2022-android-64/app/src/main/res/drawable/ic_android_black_24dp.xml" value="0.176" />
+        <entry key="..\:/cool_yeah/Year-3/VI/IF3210 PBD/Tubes 1/if3210-2022-android-64/app/src/main/res/layout/activity_main.xml" value="0.14" />
+        <entry key="..\:/cool_yeah/Year-3/VI/IF3210 PBD/Tubes 1/if3210-2022-android-64/app/src/main/res/layout/card_layout.xml" value="0.1" />
+        <entry key="..\:/cool_yeah/Year-3/VI/IF3210 PBD/Tubes 1/if3210-2022-android-64/app/src/main/res/layout/item_view.xml" value="0.2" />
+        <entry key="..\:/cool_yeah/Year-3/VI/IF3210 PBD/Tubes 1/if3210-2022-android-64/app/src/main/res/layout/list.xml" value="0.1671875" />
       </map>
     </option>
   </component>
