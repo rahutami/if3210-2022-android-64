@@ -2,6 +2,7 @@
 <FrameLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -32,14 +33,14 @@
         android:translationY="50dp"
         app:cornerRadius="30dp" />
 
-    <EditText
+    <TextView
         android:id="@+id/temp_button"
         android:layout_width="116dp"
         android:layout_height="wrap_content"
         android:ems="10"
-        android:hint="@string/string"
-        android:inputType="number"
         android:minHeight="48dp"
         android:translationX="200dp"
-        android:translationY="50dp" />
+        android:translationY="50dp"
+        tools:visibility="visible" />
+
 </FrameLayout>
