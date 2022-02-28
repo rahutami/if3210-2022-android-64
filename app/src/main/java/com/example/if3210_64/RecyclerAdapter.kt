@@ -6,6 +6,7 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 
 class RecyclerAdapter: RecyclerView.Adapter<RecyclerAdapter.ViewHolder>() {
 
@@ -28,7 +29,8 @@ class RecyclerAdapter: RecyclerView.Adapter<RecyclerAdapter.ViewHolder>() {
         val currItem = items[position]
         holder.itemTitle.text = currItem.title
         holder.itemDetail.text = currItem.date
-        holder.itemImage.setImageResource(images[position])
+        Glide.with(holder.itemView.context).load(currItem.imageUrl).into(holder.itemImage)
+        //holder.itemImage.setImageResource(images[position])
     }
 
     override fun getItemCount(): Int {
