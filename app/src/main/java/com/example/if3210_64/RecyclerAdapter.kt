@@ -25,14 +25,14 @@ class RecyclerAdapter: RecyclerView.Adapter<RecyclerAdapter.ViewHolder>() {
 
     override fun onBindViewHolder(holder: RecyclerAdapter.ViewHolder, position: Int) {
         // TO DO: ATUR PENEMPATAN variabel items
-        holder.itemTitle.text = title[position]
-        //holder.itemDetail.text = details[position]
-        holder.itemDetail.text = items.toString()
+        val currItem = items[position]
+        holder.itemTitle.text = currItem.title
+        holder.itemDetail.text = currItem.date
         holder.itemImage.setImageResource(images[position])
     }
 
     override fun getItemCount(): Int {
-        return title.size
+        return items.size
     }
 
     fun updateNews(updatedNews: ArrayList<News>) {
