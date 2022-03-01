@@ -1,6 +1,8 @@
 package com.example.if3210_64
 
 import android.Manifest
+import android.app.Activity
+import android.app.AlertDialog
 import android.content.Context
 import android.content.pm.PackageManager
 import android.hardware.Sensor
@@ -11,8 +13,10 @@ import android.os.Bundle
 import android.util.Log
 import android.widget.TextView
 import android.widget.Toast
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import com.budiyev.android.codescanner.*
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
@@ -21,12 +25,17 @@ import com.google.gson.JsonParser
 import org.json.JSONObject
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import com.android.volley.Request
+import com.android.volley.Response
+import com.android.volley.toolbox.JsonObjectRequest
+import kotlinx.android.synthetic.main.activity_main.*
+import java.io.IOException
+import java.security.Permission
 
 class CheckIn : AppCompatActivity(), SensorEventListener {
     private lateinit var codeScanner: CodeScanner
     private lateinit var sensorManager: SensorManager
     private var text: TextView? = null
-    private var BASE_URL = "https://perludilindungi.herokuapp.com/"
     private lateinit var fusedLocationClient: FusedLocationProviderClient
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -34,6 +43,24 @@ class CheckIn : AppCompatActivity(), SensorEventListener {
         setContentView(R.layout.check_in)
 
         // location
+        if (ActivityCompat.checkSelfPermission(
+                this,
+                Manifest.permission.ACCESS_FINE_LOCATION
+            ) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(
+                this,
+                Manifest.permission.ACCESS_COARSE_LOCATION
+            ) != PackageManager.PERMISSION_GRANTED
+        ) {
+            // TODO: Consider calling
+            //    ActivityCompat#requestPermissions
+            // here to request the missing permissions, and then overriding
+            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+            //                                          int[] grantResults)
+            // to handle the case where the user grants the permission. See the documentation
+            // for ActivityCompat#requestPermissions for more details.
+            requestPermissions(arrayOf(Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION),0)
+        }
+
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
 
         // Thermometer
@@ -53,9 +80,6 @@ class CheckIn : AppCompatActivity(), SensorEventListener {
         codeScanner.isFlashEnabled = false // Whether to enable flash or not
         // Callbacks
         codeScanner.decodeCallback = DecodeCallback {
-            runOnUiThread {
-                Toast.makeText(this, "Scan result: ${it.text}", Toast.LENGTH_LONG).show()
-            }
             post(it.text)
         }
         codeScanner.errorCallback = ErrorCallback { // or ErrorCallback.SUPPRESS
@@ -104,18 +128,11 @@ class CheckIn : AppCompatActivity(), SensorEventListener {
     }
 
     private fun post(qr: String) {
-        // Build post message
-        val retrofitBuilder = Retrofit.Builder()
-            .addConverterFactory(GsonConverterFactory.create())
-            .baseUrl(BASE_URL)
-            .build();
-        val service = retrofitBuilder.create(ApiInterface::class.java)
 
-        // get location
         if (ActivityCompat.checkSelfPermission(
                 this,
                 Manifest.permission.ACCESS_FINE_LOCATION
-            ) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(
+            ) != PackageManager.PERMISSION_GRANTED || ActivityCompat.checkSelfPermission(
                 this,
                 Manifest.permission.ACCESS_COARSE_LOCATION
             ) != PackageManager.PERMISSION_GRANTED
@@ -126,41 +143,77 @@ class CheckIn : AppCompatActivity(), SensorEventListener {
             //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
             //                                          int[] grantResults)
             // to handle the case where the user grants the permission. See the documentation
-            // for ActivityCompat#requestPermissions for more details
+            // for ActivityCompat#requestPermissions for more details.
+            requestPermissions(arrayOf(Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION),0)
             return
         }
-
         fusedLocationClient.lastLocation
-            .addOnSuccessListener { location->
+            .addOnSuccessListener(this) { location->
                 if (location != null) {
-                    val body = JSONObject()
-                    body.put("qrcode", qr)
-                    body.put("latitude", location.latitude)
-                    body.put("longitude", location.longitude)
+                    var response = makeRequest(qr, location.latitude, location.longitude)
+                    Toast.makeText(this, response.toString(), Toast.LENGTH_LONG).show()
+                    if (response.success) {
+                        val builder: AlertDialog.Builder? = this.let {
+                            AlertDialog.Builder(it)
+                        }
 
-                    val response = service.postQrCode(qr, location.latitude, location.longitude)
-                    if (response.isSuccessful) {
-                        val gson = GsonBuilder().setPrettyPrinting().create()
-                        val prettyJson = gson.toJson(
-                            JsonParser.parseString(
-                                response.body()
-                                    ?.toString() // About this thread blocking annotation : https://github.com/square/retrofit/issues/3255
-                            )
-                        )
+                        builder?.setMessage("Berhasil")
 
-                        Log.d("Pretty Printed JSON :", prettyJson)
+                        builder?.create()
+                        Toast.makeText(this, response.message, Toast.LENGTH_LONG).show()
                     }
                     else {
-                        Log.e("RETROFIT_ERROR", response.code().toString())
+                        Toast.makeText(this, response.message, Toast.LENGTH_LONG).show()
                     }
                 }
                 else {
-
+                        // can not find location
+                    Toast.makeText(this, location, Toast.LENGTH_LONG).show()
                 }
-
             }
-
-
     }
+
+    private fun makeRequest(qr: String, lat: Double, long: Double): QrCodeResponse {
+        val url = "https://perludilindungi.herokuapp.com/check-in/"
+        var data = Data("", "")
+        var response = QrCodeResponse(
+            false,
+            0,
+            "Error fetch",
+            data
+        )
+        val msg = JSONObject()
+        msg.put("qrCode", qr)
+        msg.put("latitude", lat)
+        msg.put("longitude", long)
+        val jsonObjectRequest = JsonObjectRequest(
+            Request.Method.POST,
+            url,
+            msg,
+            {
+                data = Data(
+                    it.getJSONObject("data").getString("userStatus"),
+                    it.getJSONObject("data").getString("reason")
+                )
+                response = QrCodeResponse(
+                    it.getBoolean("success"),
+                    it.getInt("code"),
+                    it.getString("message"),
+                    data
+                )
+            },
+            {
+                response = QrCodeResponse(
+                    false,
+                    0,
+                    "Err",
+                    data
+                )
+            }
+        )
+        return response
+    }
+
+
 }
 
