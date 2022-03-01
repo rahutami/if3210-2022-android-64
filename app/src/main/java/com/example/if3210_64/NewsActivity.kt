@@ -6,7 +6,6 @@ import android.os.Bundle
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.android.volley.Request
 import com.android.volley.toolbox.JsonObjectRequest
-import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.news_activity.*
 
 class NewsActivity : AppCompatActivity(), NewsItemClicked {
@@ -56,10 +55,5 @@ class NewsActivity : AppCompatActivity(), NewsItemClicked {
         val intent = Intent(this,WebView::class.java)
         intent.putExtra("url",item.url)
         startActivity(intent)
-
-        // Custom Tabs, Unused
-        /*val builder = CustomTabsIntent.Builder()
-        val customTabsIntent = builder.build()
-        customTabsIntent.launchUrl(this, Uri.parse(item.url))*/
     }
 }

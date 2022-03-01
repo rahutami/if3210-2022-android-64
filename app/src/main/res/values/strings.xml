@@ -1,4 +1,7 @@
 <resources>
-    <string name="app_name">if3210-64</string>
+    <string name="app_name">PerluDilindungi</string>
     <string name="news_covid_19">News COVID-19</string>
+    <string name="bookmark">Bookmark</string>
+    <string name="location">Location</string>
+    <string name="news">News</string>
 </resources>
