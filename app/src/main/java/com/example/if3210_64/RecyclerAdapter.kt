@@ -1,5 +1,6 @@
 package com.example.if3210_64
 
+import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -8,35 +9,31 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 
-class RecyclerAdapter: RecyclerView.Adapter<RecyclerAdapter.ViewHolder>() {
+class RecyclerAdapter(private var listener: NewsItemClicked): RecyclerView.Adapter<RecyclerAdapter.ViewHolder>() {
 
     private var items: ArrayList<News> = ArrayList()
 
-    private var title = arrayOf("Grader Build", "Chapter Two", "Chapter Three", "Chapter Four", "Chapter Five", "Chapter Six", "Chapter Seven", "Chapter Eight")
-    private var details = arrayOf("Item one details", "Item two details", "Item three details", "Item four details","Item five details",
-        "Item six details", "Item seven details", "Item eight details", "Item nine details", "Item ten details")
-    private var images = intArrayOf(R.drawable.ic_android_black_24dp, R.drawable.ic_android_black_24dp, R.drawable.ic_android_black_24dp,
-        R.drawable.ic_android_black_24dp, R.drawable.ic_android_black_24dp, R.drawable.ic_android_black_24dp,
-        R.drawable.ic_android_black_24dp, R.drawable.ic_android_black_24dp, R.drawable.ic_android_black_24dp, R.drawable.ic_android_black_24dp)
-
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerAdapter.ViewHolder {
         val v = LayoutInflater.from(parent.context).inflate(R.layout.card_layout,parent,false)
+        val viewHolder = ViewHolder(v)
+        v.setOnClickListener{
+            listener.onItemClicked(items[viewHolder.absoluteAdapterPosition+1])
+        }
         return ViewHolder(v)
     }
 
     override fun onBindViewHolder(holder: RecyclerAdapter.ViewHolder, position: Int) {
-        // TO DO: ATUR PENEMPATAN variabel items
         val currItem = items[position]
         holder.itemTitle.text = currItem.title
         holder.itemDetail.text = currItem.date
         Glide.with(holder.itemView.context).load(currItem.imageUrl).into(holder.itemImage)
-        //holder.itemImage.setImageResource(images[position])
     }
 
     override fun getItemCount(): Int {
         return items.size
     }
 
+    @SuppressLint("NotifyDataSetChanged")
     fun updateNews(updatedNews: ArrayList<News>) {
         items.clear()
         items.addAll(updatedNews)
@@ -45,15 +42,13 @@ class RecyclerAdapter: RecyclerView.Adapter<RecyclerAdapter.ViewHolder>() {
     }
 
     inner class ViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
-        var itemImage: ImageView
-        var itemTitle: TextView
-        var itemDetail: TextView
-
-        init {
-            itemImage = itemView.findViewById(R.id.item_image)
-            itemTitle = itemView.findViewById(R.id.item_title)
-            itemDetail = itemView.findViewById(R.id.item_detail)
-        }
+        var itemImage: ImageView = itemView.findViewById(R.id.item_image)
+        var itemTitle: TextView = itemView.findViewById(R.id.item_title)
+        var itemDetail: TextView = itemView.findViewById(R.id.item_detail)
     }
 
+}
+
+interface NewsItemClicked {
+    fun onItemClicked(item: News)
 }

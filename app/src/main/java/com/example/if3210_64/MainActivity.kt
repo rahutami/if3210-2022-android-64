@@ -1,21 +1,16 @@
 package com.example.if3210_64
 
+import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.telecom.Call
+import androidx.browser.customtabs.CustomTabsIntent
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.android.volley.Request
-import com.android.volley.Response
 import com.android.volley.toolbox.JsonObjectRequest
 import kotlinx.android.synthetic.main.activity_main.*
-import org.json.JSONObject
-import java.io.IOException
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity(), NewsItemClicked {
 
-    private var layoutManager: RecyclerView.LayoutManager? = null
-    //private var adapter: RecyclerView.Adapter<RecyclerAdapter.ViewHolder>? = null
     private lateinit var mAdapter: RecyclerAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -24,9 +19,7 @@ class MainActivity : AppCompatActivity() {
 
         recyclerView.layoutManager = LinearLayoutManager(this)
         fetchData()
-        //adapter = RecyclerAdapter()
-        mAdapter = RecyclerAdapter()
-        //recyclerView.adapter = adapter
+        mAdapter = RecyclerAdapter(this)
         recyclerView.adapter = mAdapter
     }
 
@@ -36,7 +29,7 @@ class MainActivity : AppCompatActivity() {
             Request.Method.GET,
             url,
             null,
-            Response.Listener {
+            {
                 val newsJsonArray = it.getJSONArray("results")
                 val newsArray = ArrayList<News>()
                 for (i in 0 until newsJsonArray.length()) {
@@ -52,10 +45,16 @@ class MainActivity : AppCompatActivity() {
                 }
                 mAdapter.updateNews(newsArray)
             },
-            Response.ErrorListener {
+            {
 
             }
         )
         MySingleton.getInstance(this).addToRequestQueue(jsonObjectRequest)
+    }
+
+    override fun onItemClicked(item: News) {
+        val builder = CustomTabsIntent.Builder()
+        val customTabsIntent = builder.build()
+        customTabsIntent.launchUrl(this, Uri.parse(item.url))
     }
 }
