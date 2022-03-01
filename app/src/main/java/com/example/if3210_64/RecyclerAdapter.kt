@@ -17,9 +17,9 @@ class RecyclerAdapter(private var listener: NewsItemClicked): RecyclerView.Adapt
         val v = LayoutInflater.from(parent.context).inflate(R.layout.card_layout,parent,false)
         val viewHolder = ViewHolder(v)
         v.setOnClickListener{
-            listener.onItemClicked(items[viewHolder.absoluteAdapterPosition+1])
+            listener.onItemClicked(items[viewHolder.adapterPosition])
         }
-        return ViewHolder(v)
+        return viewHolder
     }
 
     override fun onBindViewHolder(holder: RecyclerAdapter.ViewHolder, position: Int) {
