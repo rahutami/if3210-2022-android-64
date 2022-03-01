@@ -1,5 +1,6 @@
 package com.example.if3210_64
 
+import android.content.Intent
 import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -53,8 +54,13 @@ class MainActivity : AppCompatActivity(), NewsItemClicked {
     }
 
     override fun onItemClicked(item: News) {
-        val builder = CustomTabsIntent.Builder()
+        val intent = Intent(this,WebView::class.java)
+        intent.putExtra("url",item.url)
+        startActivity(intent)
+
+        // Custom Tabs, Unused
+        /*val builder = CustomTabsIntent.Builder()
         val customTabsIntent = builder.build()
-        customTabsIntent.launchUrl(this, Uri.parse(item.url))
+        customTabsIntent.launchUrl(this, Uri.parse(item.url))*/
     }
 }
