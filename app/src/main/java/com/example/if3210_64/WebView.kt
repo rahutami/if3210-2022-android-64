@@ -13,10 +13,10 @@ class WebView : AppCompatActivity() {
         val actionBar = supportActionBar
 
         if (actionBar != null) {
-            actionBar.title = "Second Activity"
+            actionBar.title = "Berita COVID-19"
         }
 
-        actionBar!!.title = "Second Activity"
+        actionBar!!.title = "Berita COVID-19"
 
         actionBar.setDisplayHomeAsUpEnabled(true)
 

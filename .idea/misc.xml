@@ -3,13 +3,18 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/cool_yeah/Year-3/VI/IF3210 PBD/Tubes 1/if3210-2022-android-64/app/src/main/res/drawable-v24/ic_launcher_foreground.xml" value="0.1035" />
+        <entry key="..\:/cool_yeah/Year-3/VI/IF3210 PBD/Tubes 1/if3210-2022-android-64/app/src/main/res/drawable/bg_gradient.xml" value="0.1035" />
         <entry key="..\:/cool_yeah/Year-3/VI/IF3210 PBD/Tubes 1/if3210-2022-android-64/app/src/main/res/drawable/ic_android_black_24dp.xml" value="0.176" />
-        <entry key="..\:/cool_yeah/Year-3/VI/IF3210 PBD/Tubes 1/if3210-2022-android-64/app/src/main/res/layout/activity_main.xml" value="0.14" />
+        <entry key="..\:/cool_yeah/Year-3/VI/IF3210 PBD/Tubes 1/if3210-2022-android-64/app/src/main/res/drawable/splash_background.xml" value="0.1945" />
+        <entry key="..\:/cool_yeah/Year-3/VI/IF3210 PBD/Tubes 1/if3210-2022-android-64/app/src/main/res/layout/activity_main.xml" value="0.1" />
+        <entry key="..\:/cool_yeah/Year-3/VI/IF3210 PBD/Tubes 1/if3210-2022-android-64/app/src/main/res/layout/activity_news.xml" value="0.2" />
         <entry key="..\:/cool_yeah/Year-3/VI/IF3210 PBD/Tubes 1/if3210-2022-android-64/app/src/main/res/layout/activity_web_view.xml" value="0.2" />
         <entry key="..\:/cool_yeah/Year-3/VI/IF3210 PBD/Tubes 1/if3210-2022-android-64/app/src/main/res/layout/article_layout.xml" value="0.2" />
         <entry key="..\:/cool_yeah/Year-3/VI/IF3210 PBD/Tubes 1/if3210-2022-android-64/app/src/main/res/layout/card_layout.xml" value="0.1" />
         <entry key="..\:/cool_yeah/Year-3/VI/IF3210 PBD/Tubes 1/if3210-2022-android-64/app/src/main/res/layout/item_view.xml" value="0.2" />
         <entry key="..\:/cool_yeah/Year-3/VI/IF3210 PBD/Tubes 1/if3210-2022-android-64/app/src/main/res/layout/list.xml" value="0.1671875" />
+        <entry key="..\:/cool_yeah/Year-3/VI/IF3210 PBD/Tubes 1/if3210-2022-android-64/app/src/main/res/layout/news_activity.xml" value="0.2" />
       </map>
     </option>
   </component>
