@@ -12,8 +12,11 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.If321064">
         <activity
+            android:name=".DashboardActivity"
+            android:exported="false" />
+        <activity
             android:name=".NewsActivity"
-            android:label="News"/>
+            android:label="News" />
         <activity
             android:name=".WebView"
             android:exported="false"
