@@ -12,4 +12,6 @@
     <color name="kkpColor">#CA4C69</color>
     <color name="klinikColor">#CABD4C</color>
     <color name="otherColor">#63CA4C</color>
+    <color name="bookmark">#159317</color>
+    <color name="unbookmark">#931515</color>
 </resources>

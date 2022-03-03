@@ -11,6 +11,8 @@ import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentTransaction
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.android.volley.Request
+import com.android.volley.toolbox.JsonObjectRequest
 
 class ListFaskesActivity : AppCompatActivity() {
 
@@ -59,125 +61,114 @@ class ListFaskesActivity : AppCompatActivity() {
     fun changeProvince(view: View){
         province = findViewById<AutoCompleteTextView>(R.id.autoCompleteProvince)?.text.toString()
 
-//        sending data to province fragment
-        val fragmentManager: FragmentManager = supportFragmentManager
-        val fragmentTransaction: FragmentTransaction = fragmentManager.beginTransaction()
-        val kFragment = kabupatenFragment()
-
-        val bundle = Bundle()
         fetchKabupaten()
-        bundle.putStringArrayList("kabupatenList", kabupatens)
-        kFragment.arguments  = bundle
-        fragmentTransaction.replace(R.id.kabupaten_fragment, kFragment).commit()
     }
     fun changeKabupaten(view: View){
         kabupaten = findViewById<AutoCompleteTextView>(R.id.autoCompleteKabupaten)?.text.toString()
         fetchFaskes()
     }
     fun fetchFaskes(){
-        faskesArray = arrayListOf<Faskes>(
-            Faskes(1, "9020107","KEL. MANGGARAI SELATAN","KOTA ADM. JAKARTA SELATAN","DKI JAKARTA","Jl. Doktor Saharjo RT.04/RW.07, Manggarai Selatan, Tebet, RT.4/RW.7, Manggarai Sel., Kec. Tebet, Kota Jakarta Selatan, Daerah Khusus Ibukota Jakarta 12860, Indonesia","-6.2175146","106.8472515","(021) 8352992","PUSKESMAS","","Siap Vaksinasi"),
-            Faskes(2, "N0000624","SILOAM HOSPITALS TB SIMATUPANG","KOTA ADM. JAKARTA SELATAN","DKI JAKARTA","Jl. R.A.Kartini No.8, RT.10/RW.4, Cilandak Bar., Kec. Cilandak, Kota Jakarta Selatan, Daerah Khusus Ibukota Jakarta 12430, Indonesia","-6.2921084","106.7843444","(021) 29531900","RUMAH SAKIT","","Siap Vaksinasi"),
-            Faskes(3, "9020903","KEL. CIKOKO","KOTA ADM. JAKARTA SELATAN","DKI JAKARTA","6, Jl. Tebet Barat IX No.64, RT.6/RW.4, Tebet Bar., Kec. Tebet, Kota Jakarta Selatan, Daerah Khusus Ibukota Jakarta 12810, Indonesia","-6.2390342","106.8478032","(021) 8295976","PUSKESMAS","","Belum Siap Vaksinasi"),
-            Faskes(4, "0112R063","RSUD PESANGGRAHAN","KOTA ADM. JAKARTA SELATAN","DKI JAKARTA","5, Jl. Cenek I No.1, RT.5/RW.3, Pesanggrahan, Kec. Pesanggrahan, Kota Jakarta Selatan, Daerah Khusus Ibukota Jakarta 12320, Indonesia","-6.2581378","106.756779","(021) 7356087","RUMAH SAKIT","C","Siap Vaksinasi"),
-            Faskes(5, "N0002066","RISTRA CLINIC","KOTA ADM. JAKARTA SELATAN","DKI JAKARTA","10, Jl. Radio Dalam Raya No.5, RT.10/RW.1, Gandaria Utara, Kec. Kby. Baru, Kota Jakarta Selatan, Daerah Khusus Ibukota Jakarta 12140, Indonesia","-6.2503169","106.7918604","(021) 7226673","","","Siap Vaksinasi"),
-            Faskes(6, "0112R077","RS MAYAPADA JAKARTA SELATAN","KOTA ADM. JAKARTA SELATAN","DKI JAKARTA","No.Kav. 29, Jl. Lb. Bulus I, RT.6/RW.4, Lb. Bulus, Cilandak, Kota Jakarta Selatan, Daerah Khusus Ibukota Jakarta 12440, Indonesia","-6.2981092","106.7857609","150770","RUMAH SAKIT","B","Siap Vaksinasi"),
-            Faskes(7, "9020705","KEL. CILANDAK BARAT","KOTA ADM. JAKARTA SELATAN","DKI JAKARTA","Jl. Komplek BNI 46 No.57, Cilandak Barat, Cilandak, RT.4/RW.5, Cilandak Barat, RT.4/RW.5, Cilandak Bar., Kec. Cilandak, Kota Jakarta Selatan, Daerah Khusus Ibukota Jakarta 12430, Indonesia","-6.2868199","106.7932134","(021) 7694279","PUSKESMAS","","Siap Vaksinasi")
+        val url = "https://perludilindungi.herokuapp.com/api/get-faskes-vaksinasi?province="+province+"&city="+kabupaten
+        val jsonObjectRequest = JsonObjectRequest(
+            Request.Method.GET,
+            url,
+            null,
+            {
+                println("good")
+                val faskesJsonArray = it.getJSONArray("data")
+                val provinces = ArrayList<String>()
+                for (i in 0 until faskesJsonArray.length()) {
+                    val faskesJsonObject = faskesJsonArray.getJSONObject(i)
+                    val faskes = Faskes(
+                        faskesJsonObject.getInt("id"),
+                        faskesJsonObject.getString("kode"),
+                        faskesJsonObject.getString("nama"),
+                        faskesJsonObject.getString("kota"),
+                        faskesJsonObject.getString("provinsi"),
+                        faskesJsonObject.getString("alamat"),
+                        faskesJsonObject.getString("latitude"),
+                        faskesJsonObject.getString("longitude"),
+                        faskesJsonObject.getString("telp"),
+                        faskesJsonObject.getString("jenis_faskes"),
+                        faskesJsonObject.getString("kelas_rs"),
+                        faskesJsonObject.getString("status")
+                    )
+                    faskesArray.add(faskes)
+                }
+                adapter?.updateFaskes(faskesArray)
+            },
+            {
+                println("error")
+
+            }
         )
-        adapter?.updateFaskes(faskesArray)
-//        val url = "https://perludilindungi.herokuapp.com/api/get-faskes-vaksinasi?province="+province+"&city="+kabupaten
-//        println(url)
-//        val faskesArray = ArrayList<Faskes>()
-//        val jsonObjectRequest = JsonObjectRequest(
-//            Request.Method.GET,
-//            url,
-//            null,
-//            {
-//                println("good")
-//                val faskesJsonArray = it.getJSONArray("data")
-//                val provinces = ArrayList<String>()
-//                for (i in 0 until faskesJsonArray.length()) {
-//                    val provinceJsonObject = faskesJsonArray.getJSONObject(i)
-//                    provinces.add(provinceJsonObject.getString("key"))
-//                    println(provinceJsonObject.getString("key"))
-//                    val faskes = Faskes(
-//                        provinceJsonObject.getString("kode"),
-//                        provinceJsonObject.getString("nama"),
-//                        provinceJsonObject.getString("kota"),
-//                        provinceJsonObject.getString("provinsi"),
-//                        provinceJsonObject.getString("alamat"),
-//                        provinceJsonObject.getString("latitude"),
-//                        provinceJsonObject.getString("longitude"),
-//                        provinceJsonObject.getString("telp"),
-//                        provinceJsonObject.getString("jenis_faskes"),
-//                        provinceJsonObject.getString("kelas_rs"),
-//                        provinceJsonObject.getString("status")
-//                    )
-//                    println(provinceJsonObject.getString("nama"))
-//                    faskesArray.add(faskes)
-//                }
-//                adapter?.updateFaskes(faskesArray)
-//            },
-//            {
-//                println("error")
-//
-//            }
-//        )
-//        MySingleton.getInstance(this).addToRequestQueue(jsonObjectRequest)
+        MySingleton.getInstance(this).addToRequestQueue(jsonObjectRequest)
     }
     fun fetchKabupaten(){
         kabupatens.clear()
-        if(province == "Jakarta"){
-            kabupatens.add("Jakarta Selatan")
-            kabupatens.add("Jakarta Utara")
-        } else {
-            kabupatens.add("Sleman")
-            kabupatens.add("Pacitan")
-        }
 
-//        val url = "https://perludilindungi.herokuapp.com/api/get-city?start_id="+province
-//        println(url)
-//        val faskesArray = ArrayList<Faskes>()
-//        val jsonObjectRequest = JsonObjectRequest(
-//            Request.Method.GET,
-//            url,
-//            null,
-//            {
-//                println("good")
-//                val faskesJsonArray = it.getJSONArray("data")
-//                val provinces = ArrayList<String>()
-//                for (i in 0 until faskesJsonArray.length()) {
-//                    val provinceJsonObject = faskesJsonArray.getJSONObject(i)
-//                    provinces.add(provinceJsonObject.getString("key"))
-//                    println(provinceJsonObject.getString("key"))
-//                    val faskes = Faskes(
-//                        provinceJsonObject.getString("kode"),
-//                        provinceJsonObject.getString("nama"),
-//                        provinceJsonObject.getString("kota"),
-//                        provinceJsonObject.getString("provinsi"),
-//                        provinceJsonObject.getString("alamat"),
-//                        provinceJsonObject.getString("latitude"),
-//                        provinceJsonObject.getString("longitude"),
-//                        provinceJsonObject.getString("telp"),
-//                        provinceJsonObject.getString("jenis_faskes"),
-//                        provinceJsonObject.getString("kelas_rs"),
-//                        provinceJsonObject.getString("status")
-//                    )
-//                    println(provinceJsonObject.getString("nama"))
-//                    faskesArray.add(faskes)
-//                }
-//                adapter?.updateFaskes(faskesArray)
-//            },
-//            {
-//                println("error")
-//
-//            }
-//        )
-//        MySingleton.getInstance(this).addToRequestQueue(jsonObjectRequest)
+        val url = "https://perludilindungi.herokuapp.com/api/get-city?start_id="+province
+        println(url)
+
+        val jsonObjectRequest = JsonObjectRequest(
+            Request.Method.GET,
+            url,
+            null,
+            {
+                println("good")
+                val kabupatenJsonArray = it.getJSONArray("results")
+                for (i in 0 until kabupatenJsonArray.length()) {
+                    val provinceJsonObject = kabupatenJsonArray.getJSONObject(i)
+                    kabupatens.add(provinceJsonObject.getString("key"))
+                }
+
+//          sending data to province fragment
+                val fragmentManager: FragmentManager = supportFragmentManager
+                val fragmentTransaction: FragmentTransaction = fragmentManager.beginTransaction()
+                val kFragment = kabupatenFragment()
+
+                val bundle = Bundle()
+                bundle.putStringArrayList("kabupatenList", kabupatens)
+                kFragment.arguments  = bundle
+                fragmentTransaction.replace(R.id.kabupaten_fragment, kFragment).commit()
+            },
+            {
+                println("error")
+
+            }
+        )
+        MySingleton.getInstance(this).addToRequestQueue(jsonObjectRequest)
     }
     fun fetchProvince(){
         val url = "https://perludilindungi.herokuapp.com/api/get-province"
-        provinces.add("Jakarta")
-        provinces.add("Yogyakarta")
+        println(url)
+        val jsonObjectRequest = JsonObjectRequest(
+            Request.Method.GET,
+            url,
+            null,
+            {
+                println("good")
+                val provinceJsonArray = it.getJSONArray("results")
+                for (i in 0 until provinceJsonArray.length()) {
+                    val provinceJsonObject = provinceJsonArray.getJSONObject(i)
+                    provinces.add(provinceJsonObject.getString("key"))
+                }
+
+                //        sending data to province fragment
+                val fragmentManager: FragmentManager = supportFragmentManager
+                val fragmentTransaction: FragmentTransaction = fragmentManager.beginTransaction()
+                val provinceFragment = ProvinceFragment()
+
+                val bundle = Bundle()
+                bundle.putStringArrayList("provinceList", provinces)
+                provinceFragment.arguments  = bundle
+                fragmentTransaction.replace(R.id.province_fragment, provinceFragment).commit()
+            },
+            {
+                println("error")
+
+            }
+        )
+        MySingleton.getInstance(this).addToRequestQueue(jsonObjectRequest)
     }
 }

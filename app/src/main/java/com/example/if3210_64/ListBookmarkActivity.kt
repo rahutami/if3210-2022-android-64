@@ -4,6 +4,8 @@ import android.annotation.SuppressLint
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.View
+import android.widget.TextView
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 
@@ -35,11 +37,21 @@ class ListBookmarkActivity : AppCompatActivity() {
         bookmarkRecyclerView.adapter = adapter
         db = DBHelper(this, null)
         fetchBookmark()
+        if(faskesArray.size > 0){
+            val warningBookmark = findViewById<TextView>(R.id.warning_bookmark)
+            warningBookmark.setVisibility(View.GONE)
+        }
     }
 
     @SuppressLint("Range")
     fun fetchBookmark(){
         val cursor = db.getBookmark()
+
+        if (cursor != null) {
+            if(cursor.count == 0){
+                return
+            }
+        }
 
         cursor!!.moveToFirst()
         val id = cursor.getInt(cursor.getColumnIndex(DBHelper.ID_COL))

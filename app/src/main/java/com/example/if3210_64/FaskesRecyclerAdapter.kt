@@ -42,18 +42,6 @@ class FaskesRecyclerAdapter: RecyclerView.Adapter<FaskesRecyclerAdapter.ViewHold
         holder.kodeView.text = currItem.kode
         holder.telpView.text = currItem.telp
 
-        holder.kode = currItem.kode
-        holder.nama = currItem.nama
-        holder.kota = currItem.kota
-        holder.provinsi = currItem.provinsi
-        holder.alamat = currItem.alamat
-        holder.latitude = currItem.latitude
-        holder.longitude = currItem.longitude
-        holder.telp = currItem.telp
-        holder.jenis_faskes = currItem.jenis_faskes
-        holder.kelas_rs = currItem.kelas_rs
-        holder.status = currItem.status
-
         if(currItem.jenis_faskes.equals("rumah sakit", true)){
             holder.jenis_faskesView.setBackgroundResource(R.color.rsColor)
         } else if(currItem.jenis_faskes.equals("puskesmas", true)){
@@ -79,17 +67,6 @@ class FaskesRecyclerAdapter: RecyclerView.Adapter<FaskesRecyclerAdapter.ViewHold
     }
 
     inner class ViewHolder(itemView: View, listener: onItemClickListener): RecyclerView.ViewHolder(itemView) {
-        var kode: String = ""
-        var nama: String = ""
-        var kota: String = ""
-        var provinsi: String = ""
-        var alamat: String = ""
-        var latitude: String = ""
-        var longitude: String = ""
-        var telp: String = ""
-        var jenis_faskes: String = ""
-        var kelas_rs: String = ""
-        var status: String = ""
         var namaView: TextView
         var jenis_faskesView: TextView
         var alamatView: TextView
