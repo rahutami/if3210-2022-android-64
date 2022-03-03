@@ -41,7 +41,7 @@ class DBHelper(context: Context, factory: SQLiteDatabase.CursorFactory?) :
     }
 
     // This method is for adding data in our database
-    fun addBokmark(faskes: Faskes){
+    fun addBokmark(faskes: Faskes) {
 
         // below we are creating
         // a content values variable
@@ -91,24 +91,27 @@ class DBHelper(context: Context, factory: SQLiteDatabase.CursorFactory?) :
 
     }
 
-    fun deleteBookmark(faskes: Faskes): Cursor?{
+    fun deleteBookmark(faskes: Faskes): Cursor? {
         val db = this.readableDatabase
         val query = "DELETE FROM " + TABLE_NAME + " WHERE " + ID_COL + " = " + faskes.id
-        val result =  db.rawQuery(query, null)
+        val result = db.rawQuery(query, null)
         println(query)
         println(result.count)
         return result
     }
 
-    fun checkDuplicate(faskes: Faskes) : Boolean{
+    fun checkDuplicate(faskes: Faskes): Boolean {
         val db = this.readableDatabase
 
-        val result = db.rawQuery("SELECT * FROM " + TABLE_NAME + " WHERE " + ID_COL + " = " + faskes.id, null)
+        val result = db.rawQuery(
+            "SELECT * FROM " + TABLE_NAME + " WHERE " + ID_COL + " = " + faskes.id,
+            null
+        )
 
         return result.count == 1
     }
 
-    companion object{
+    companion object {
         // here we have defined variables for our database
 
         // below is variable for database name

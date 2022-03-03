@@ -2,10 +2,10 @@ package com.example.if3210_64
 
 import android.annotation.SuppressLint
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
 import android.widget.TextView
+import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 
@@ -26,7 +26,7 @@ class ListBookmarkActivity : AppCompatActivity() {
         val bookmarkRecyclerView = findViewById<RecyclerView>(R.id.bookmarkRecyclerView)
         bookmarkRecyclerView.layoutManager = layoutManager
         adapter = FaskesRecyclerAdapter()
-        adapter!!.setOnItemClickListener(object: FaskesRecyclerAdapter.onItemClickListener{
+        adapter!!.setOnItemClickListener(object : FaskesRecyclerAdapter.onItemClickListener {
             override fun onItemClick(position: Int) {
                 val intent = Intent(this@ListBookmarkActivity, DetailFaskesActivity::class.java)
                 intent.putExtra("faskes", faskesArray[position])
@@ -36,28 +36,28 @@ class ListBookmarkActivity : AppCompatActivity() {
         })
         bookmarkRecyclerView.adapter = adapter
         fetchBookmark()
-        if(faskesArray.size > 0){
+        if (faskesArray.size > 0) {
             val warningBookmark = findViewById<TextView>(R.id.warning_bookmark)
-            warningBookmark.setVisibility(View.GONE)
+            warningBookmark.visibility = View.GONE
         }
     }
 
     override fun onResume() {
         fetchBookmark()
-        if(faskesArray.size > 0){
+        if (faskesArray.size > 0) {
             val warningBookmark = findViewById<TextView>(R.id.warning_bookmark)
-            warningBookmark.setVisibility(View.GONE)
+            warningBookmark.visibility = View.GONE
         }
         super.onResume()
     }
 
     @SuppressLint("Range")
-    fun fetchBookmark(){
+    fun fetchBookmark() {
         faskesArray.clear()
         val cursor = db.getBookmark()
 
         if (cursor != null) {
-            if(cursor.count == 0){
+            if (cursor.count == 0) {
                 return
             }
         }
@@ -76,10 +76,25 @@ class ListBookmarkActivity : AppCompatActivity() {
         val kelas_rs = cursor.getString(cursor.getColumnIndex(DBHelper.KELAS_COL))
         val status = cursor.getString(cursor.getColumnIndex(DBHelper.STATUS_COL))
 
-        faskesArray.add(Faskes(id, kode, nama, kota, provinsi, alamat, latitude, longitude, telp, jenis_faskes, kelas_rs, status))
+        faskesArray.add(
+            Faskes(
+                id,
+                kode,
+                nama,
+                kota,
+                provinsi,
+                alamat,
+                latitude,
+                longitude,
+                telp,
+                jenis_faskes,
+                kelas_rs,
+                status
+            )
+        )
         // moving our cursor to next
         // position and appending values
-        while(cursor.moveToNext()){
+        while (cursor.moveToNext()) {
             val id = cursor.getInt(cursor.getColumnIndex(DBHelper.ID_COL))
             val kode = cursor.getString(cursor.getColumnIndex(DBHelper.KODE_COL))
             val nama = cursor.getString(cursor.getColumnIndex(DBHelper.NAME_COl))
@@ -95,7 +110,22 @@ class ListBookmarkActivity : AppCompatActivity() {
 
             println("${id} ${nama}")
 
-            faskesArray.add(Faskes(id, kode, nama, kota, provinsi, alamat, latitude, longitude, telp, jenis_faskes, kelas_rs, status))
+            faskesArray.add(
+                Faskes(
+                    id,
+                    kode,
+                    nama,
+                    kota,
+                    provinsi,
+                    alamat,
+                    latitude,
+                    longitude,
+                    telp,
+                    jenis_faskes,
+                    kelas_rs,
+                    status
+                )
+            )
         }
 
         // at last we close our cursor

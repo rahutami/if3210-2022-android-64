@@ -2,7 +2,7 @@ package com.example.if3210_64
 
 import java.io.Serializable
 
-data class Faskes (
+data class Faskes(
     val id: Int,
     val kode: String,
     val nama: String,

@@ -7,7 +7,6 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.http.Field
 import retrofit2.http.FormUrlEncoded
-import retrofit2.http.GET
 import retrofit2.http.POST
 
 class NetworkConfig {
@@ -19,13 +18,15 @@ class NetworkConfig {
             .addInterceptor(logging)
             .build()
     }
-    fun getRetrofit() : Retrofit {
+
+    fun getRetrofit(): Retrofit {
         return Retrofit.Builder()
             .baseUrl("https://perludilindungi.herokuapp.com/")
             .client(getInterceptor())
             .addConverterFactory(GsonConverterFactory.create())
             .build()
     }
+
     fun getService() = getRetrofit().create(Api::class.java)
 }
 

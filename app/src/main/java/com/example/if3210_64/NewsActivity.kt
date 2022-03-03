@@ -1,8 +1,8 @@
 package com.example.if3210_64
 
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.android.volley.Request
 import com.android.volley.toolbox.JsonObjectRequest
@@ -52,8 +52,8 @@ class NewsActivity : AppCompatActivity(), NewsItemClicked {
     }
 
     override fun onItemClicked(item: News) {
-        val intent = Intent(this,WebView::class.java)
-        intent.putExtra("url",item.url)
+        val intent = Intent(this, WebView::class.java)
+        intent.putExtra("url", item.url)
         startActivity(intent)
     }
 }

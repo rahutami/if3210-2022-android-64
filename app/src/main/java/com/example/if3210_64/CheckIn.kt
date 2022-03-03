@@ -53,15 +53,22 @@ class CheckIn : AppCompatActivity(), SensorEventListener {
             //                                          int[] grantResults)
             // to handle the case where the user grants the permission. See the documentation
             // for ActivityCompat#requestPermissions for more details.
-            requestPermissions(arrayOf(Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION),0)
+            requestPermissions(
+                arrayOf(
+                    Manifest.permission.ACCESS_FINE_LOCATION,
+                    Manifest.permission.ACCESS_COARSE_LOCATION
+                ), 0
+            )
         }
 
         val locationRequest = LocationRequest()
         val locationCallback = LocationCallback()
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
-        fusedLocationClient.requestLocationUpdates(locationRequest,
+        fusedLocationClient.requestLocationUpdates(
+            locationRequest,
             locationCallback,
-            Looper.getMainLooper())
+            Looper.getMainLooper()
+        )
 
         val manager = getSystemService(LOCATION_SERVICE) as LocationManager
         if (!manager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
@@ -120,7 +127,7 @@ class CheckIn : AppCompatActivity(), SensorEventListener {
 
     override fun onSensorChanged(sensorEvent: SensorEvent) {
         if (sensorEvent.values.isNotEmpty()) {
-            text?.text = sensorEvent.values[0].toString();
+            text?.text = sensorEvent.values[0].toString()
         }
     }
 
@@ -142,12 +149,17 @@ class CheckIn : AppCompatActivity(), SensorEventListener {
                 Manifest.permission.ACCESS_COARSE_LOCATION
             ) != PackageManager.PERMISSION_GRANTED
         ) {
-            requestPermissions(arrayOf(Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION),0)
+            requestPermissions(
+                arrayOf(
+                    Manifest.permission.ACCESS_FINE_LOCATION,
+                    Manifest.permission.ACCESS_COARSE_LOCATION
+                ), 0
+            )
             return
         }
         fusedLocationClient.lastLocation
-            .addOnCompleteListener(this) { location->
-                if (location!!.result != null) {
+            .addOnCompleteListener(this) { location ->
+                if (location.result != null) {
                     NetworkConfig().getService()
                         .createPost(
                             qr,
@@ -156,22 +168,26 @@ class CheckIn : AppCompatActivity(), SensorEventListener {
                         )
                         .enqueue(object : Callback<QrCodeResponse> {
                             override fun onFailure(call: Call<QrCodeResponse>, t: Throwable) {
-                                Toast.makeText(this@CheckIn, t.localizedMessage, Toast.LENGTH_SHORT).show()
+                                Toast.makeText(this@CheckIn, t.localizedMessage, Toast.LENGTH_SHORT)
+                                    .show()
                             }
+
                             override fun onResponse(
                                 call: Call<QrCodeResponse>,
                                 response: retrofit2.Response<QrCodeResponse>
                             ) {
                                 if (response.isSuccessful) {
-                                    showDialog(response.body()!!.data.userStatus, response.body()!!.data.reason)
-                                }
-                                else {
-                                    Toast.makeText(this@CheckIn, "Bad Request", Toast.LENGTH_LONG).show()
+                                    showDialog(
+                                        response.body()!!.data.userStatus,
+                                        response.body()!!.data.reason
+                                    )
+                                } else {
+                                    Toast.makeText(this@CheckIn, "Bad Request", Toast.LENGTH_LONG)
+                                        .show()
                                 }
                             }
                         })
-                }
-                else {
+                } else {
                     // can not find location
                     buildAlertMessageNoGps()
                 }
@@ -180,7 +196,7 @@ class CheckIn : AppCompatActivity(), SensorEventListener {
 
     fun showDialog(color: String, reason: String) {
         val fragmentManager = supportFragmentManager
-        val newFragment  = if (color == "green"){
+        val newFragment = if (color == "green") {
             DialogCheckIn(true, reason)
         } else {
             DialogCheckIn(false, reason)
@@ -189,21 +205,21 @@ class CheckIn : AppCompatActivity(), SensorEventListener {
     }
 
     private fun buildAlertMessageNoGps() {
-        var builder = AlertDialog.Builder(this);
+        var builder = AlertDialog.Builder(this)
         builder.setMessage("Your GPS seems to be disabled, do you want to enable it?")
             .setCancelable(false)
             .setPositiveButton("OK",
                 DialogInterface.OnClickListener { dialog, id ->
                     // sign in the user ..
                     startActivity(Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS))
-                    dialog.cancel();
-            })
+                    dialog.cancel()
+                })
             .setNegativeButton("Cancel",
                 DialogInterface.OnClickListener { dialog, id ->
                     dialog.cancel()
                 })
-        var alert = builder.create();
-        alert.show();
+        var alert = builder.create()
+        alert.show()
     }
 }
 

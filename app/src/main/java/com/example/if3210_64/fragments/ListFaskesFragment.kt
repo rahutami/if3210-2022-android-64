@@ -1,17 +1,15 @@
 package com.example.if3210_64.fragments
 
 import android.Manifest
-import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Bundle
 import android.os.Parcelable
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.AutoCompleteTextView
-import android.widget.Button
 import androidx.core.app.ActivityCompat
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentTransaction
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -21,8 +19,6 @@ import com.android.volley.toolbox.JsonObjectRequest
 import com.example.if3210_64.*
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
-import kotlinx.android.synthetic.main.fragment_kabupaten.view.*
-import kotlinx.android.synthetic.main.fragment_province.view.*
 
 class ListFaskesFragment : Fragment(), View.OnClickListener {
 
@@ -226,85 +222,81 @@ class ListFaskesFragment : Fragment(), View.OnClickListener {
         return rad * 180.0 / Math.PI
     }
 
-        override fun onClick(v: View) {
-            println(v.getId())
-            when (v.getId()) {
-                R.id.button_Province -> {
-                    changeProvince(v)
-                }
-                R.id.button_Kabupaten -> {
-                    changeKabupaten(v)
-                }
+    override fun onClick(v: View) {
+        println(v.id)
+        when (v.id) {
+            R.id.button_Province -> {
+                changeProvince(v)
+            }
+            R.id.button_Kabupaten -> {
+                changeKabupaten(v)
             }
         }
-
-        override fun onCreate(savedInstanceState: Bundle?) {
-            super.onCreate(savedInstanceState)
-        }
-
-        override fun onCreateView(
-            inflater: LayoutInflater, container: ViewGroup?,
-            savedInstanceState: Bundle?
-        ): View? {
-            // Inflate the layout for this fragment
-
-            // onclick listener stuff
-            //view?.button_Kabupaten?.setOnClickListener();
-            //view?.button_Province?.setOnClickListener(clickListener);
-            return inflater.inflate(R.layout.fragment_list_faskes, container, false)
-        }
-
-        override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-            super.onViewCreated(view, savedInstanceState)
-
-            layoutManager = LinearLayoutManager(activity)
-
-            //        sending data to province fragment
-            val fragmentManager: FragmentManager = requireActivity().supportFragmentManager
-            val fragmentTransaction: FragmentTransaction = fragmentManager.beginTransaction()
-            val provinceFragment = ProvinceFragment()
-
-            val bundle = Bundle()
-            fetchProvince()
-            bundle.putStringArrayList("provinceList", provinces)
-            provinceFragment.arguments = bundle
-            fragmentTransaction.replace(R.id.province_fragment, provinceFragment).commit()
-
-            //        recycler view stuff
-            val faskesRecyclerView = view.findViewById<RecyclerView>(R.id.faskesRecyclerView)
-            faskesRecyclerView.layoutManager = layoutManager
-            adapter = FaskesRecyclerAdapter()
-            adapter!!.setOnItemClickListener(object : FaskesRecyclerAdapter.onItemClickListener {
-                override fun onItemClick(position: Int) {
-
-                    // Use Bundle to exchange data between two fragments
-                    val input = faskesArray[position]
-                    val bundle = Bundle()
-                    bundle.putParcelableArrayList(
-                        "input",
-                        faskesArray[position] as ArrayList<out Parcelable>
-                    )
-
-                    /*// Change the fragment
-                    val fragment = DetailFaskesFragment()
-                    fragment.arguments = bundle
-                    val fr = requireActivity().supportFragmentManager.beginTransaction()
-                    fr.replace(R.id.fragment_container,fragment)
-                    fr.addToBackStack(null)
-                    fr.commit()*/
-
-
-                    //val intent = Intent(@ListFaskesActivity, DetailFaskesActivity::class.java)
-                    //intent.putExtra("faskes", faskesArray[position])
-                    //startActivity(intent)
-                }
-
-            })
-            faskesRecyclerView.adapter = adapter
-
-            //        Location stuff
-            fusedLocationClient = LocationServices.getFusedLocationProviderClient(requireActivity())
-
-
-        }
     }
+
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        // Inflate the layout for this fragment
+
+        // onclick listener stuff
+        //view?.button_Kabupaten?.setOnClickListener();
+        //view?.button_Province?.setOnClickListener(clickListener);
+        return inflater.inflate(R.layout.fragment_list_faskes, container, false)
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        layoutManager = LinearLayoutManager(activity)
+
+        //        sending data to province fragment
+        val fragmentManager: FragmentManager = requireActivity().supportFragmentManager
+        val fragmentTransaction: FragmentTransaction = fragmentManager.beginTransaction()
+        val provinceFragment = ProvinceFragment()
+
+        val bundle = Bundle()
+        fetchProvince()
+        bundle.putStringArrayList("provinceList", provinces)
+        provinceFragment.arguments = bundle
+        fragmentTransaction.replace(R.id.province_fragment, provinceFragment).commit()
+
+        //        recycler view stuff
+        val faskesRecyclerView = view.findViewById<RecyclerView>(R.id.faskesRecyclerView)
+        faskesRecyclerView.layoutManager = layoutManager
+        adapter = FaskesRecyclerAdapter()
+        adapter!!.setOnItemClickListener(object : FaskesRecyclerAdapter.onItemClickListener {
+            override fun onItemClick(position: Int) {
+
+                // Use Bundle to exchange data between two fragments
+                val input = faskesArray[position]
+                val bundle = Bundle()
+                bundle.putParcelableArrayList(
+                    "input",
+                    faskesArray[position] as ArrayList<out Parcelable>
+                )
+
+                /*// Change the fragment
+                val fragment = DetailFaskesFragment()
+                fragment.arguments = bundle
+                val fr = requireActivity().supportFragmentManager.beginTransaction()
+                fr.replace(R.id.fragment_container,fragment)
+                fr.addToBackStack(null)
+                fr.commit()*/
+
+
+                //val intent = Intent(@ListFaskesActivity, DetailFaskesActivity::class.java)
+                //intent.putExtra("faskes", faskesArray[position])
+                //startActivity(intent)
+            }
+
+        })
+        faskesRecyclerView.adapter = adapter
+
+        //        Location stuff
+        fusedLocationClient = LocationServices.getFusedLocationProviderClient(requireActivity())
+
+
+    }
+}
