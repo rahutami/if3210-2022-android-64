@@ -47,7 +47,7 @@
             android:layout_height="wrap_content"
             android:text="Cari\nFaskes"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/textInputLayout2"
+            app:layout_constraintStart_toEndOf="@+id/textInputKabupaten"
             app:layout_constraintTop_toBottomOf="@+id/pilih_kabupaten" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

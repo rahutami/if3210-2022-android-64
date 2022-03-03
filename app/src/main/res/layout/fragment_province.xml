@@ -51,7 +51,7 @@
             android:onClick="changeProvince"
             android:text="Cari\nKabupaten"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/textInputLayout"
+            app:layout_constraintStart_toEndOf="@+id/textInputProvince"
             app:layout_constraintTop_toBottomOf="@+id/pilih_province" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>

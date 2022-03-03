@@ -1,14 +1,22 @@
 package com.example.if3210_64
 
+import android.annotation.SuppressLint
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
+import android.widget.Toast
 
 class DetailFaskesActivity : AppCompatActivity() {
+    private lateinit var faskes: Faskes
+    private lateinit var db: DBHelper
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_detail_faskes)
+
+        db = DBHelper(this, null)
 
         val faskesName = findViewById<TextView>(R.id.faskes_name)
         val faskesPhone = findViewById<TextView>(R.id.faskes_phone)
@@ -20,6 +28,7 @@ class DetailFaskesActivity : AppCompatActivity() {
 
         val bundle : Bundle? = intent.extras
         val faskesDetail : Faskes = bundle!!.getSerializable("faskes") as Faskes
+        faskes = faskesDetail
 
         faskesName.text = faskesDetail.nama
         faskesPhone.text = faskesDetail.telp
@@ -49,5 +58,15 @@ class DetailFaskesActivity : AppCompatActivity() {
         } else {
             faskesType.setBackgroundResource(R.color.otherColor)
         }
+    }
+
+    @SuppressLint("Range")
+    fun onClickBookmark(view: View){
+        if(db.checkDuplicate(faskes)){
+            Toast.makeText(this, faskes.nama + " has already added", Toast.LENGTH_LONG).show()
+            return
+        }
+
+        db.addBokmark(faskes)
     }
 }
