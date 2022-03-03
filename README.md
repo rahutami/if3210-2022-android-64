@@ -22,18 +22,19 @@ Aplikasi ini dapat:
     * Menyalakan kamera dan melakukan scan QR code dengan library [budiyev](https://github.com/yuriy-budiyev/code-scanner). Jika kamera tidak terdeteksi maka akan muncul pesan error
     * Jika QR code terbaca, maka akan mengirimkan pesan QR code serta posisi latitude & longitude ke API Server PerluDilindungi dengan Library [Retrofit](https://square.github.io/retrofit/)
     * Jika respon API sukses, maka akan muncul pop up berhasil atau gagal check in berdasarkan pesan QR code. Jika respon API gagal, maka akan muncul pesan error
-    
+
 ## Library
 
 
 ## Screenshot aplikasi
-![news](link)
-news
-news_article
-search_faskes <!-- Ini baru mo milih -->
-search_faskes_2 <!-- Ini udh milih provinsi -->
-bookmark0 <!-- 1 bookmark doang -->
-checkin
+<!-- show all pictures from screenshots/ -->
+<!-- news.png -->
+![news.png](screenshots/news.png)
+![news_article.png](screenshots/news_article.png)
+![search_faskes.png](screenshots/search_faskes.png)
+![search_faskes_2.png](screenshots/search_faskes_2.png)
+![check_in.png](screenshots/check_in.png)
+![bookmark0.png](screenshots/bookmark0.png)
 
 <!-- SEMUANYA DLM PNG YAGESYA -->
 <!-- DIREKTORI GAMBAR DI SCREENSHOTS/<FILE>.PNG YAGESYA -->
