@@ -3,6 +3,9 @@
     package="com.example.if3210_64">
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
 
     <application
         android:allowBackup="true"
@@ -22,6 +25,10 @@
             android:exported="false"
             android:parentActivityName=".NewsActivity" />
         <activity
+            android:name=".ListBookmarkActivity"
+            android:exported="false"
+            android:label="Daftar Bookmark Faskes" />
+        <activity
             android:name=".MainActivity"
             android:exported="true">
             <intent-filter>
@@ -30,6 +37,16 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity
+            android:name=".DetailFaskesActivity"
+            android:exported="false"
+            android:label="Detail Faskes"
+            />
+        <activity
+            android:name=".ListFaskesActivity"
+            android:exported="true"
+            android:label="Cari Fasilitas Kesehatan"
+            ></activity>
     </application>
 
 </manifest>
