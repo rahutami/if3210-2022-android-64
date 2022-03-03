@@ -14,7 +14,7 @@ class MainActivity : AppCompatActivity() {
         supportActionBar?.hide()
 
         Handler().postDelayed({
-            val intent = Intent(this@MainActivity, NewsActivity::class.java)
+            val intent = Intent(this@MainActivity, DashboardActivity::class.java)
             startActivity(intent)
         }, 3000)
     }

@@ -1,20 +1,20 @@
 package com.example.if3210_64.fragments
 
+import android.content.Intent
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.Fragment
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.android.volley.Request
 import com.android.volley.toolbox.JsonObjectRequest
-import com.example.if3210_64.MySingleton
-import com.example.if3210_64.News
-import com.example.if3210_64.R
-import com.example.if3210_64.RecyclerAdapter
+import com.example.if3210_64.*
+import kotlinx.android.synthetic.main.fragment_news.*
 
-class NewsFragment : Fragment() {
+class NewsFragment : Fragment(), NewsItemFrClicked {
 
-    private lateinit var mAdapter: RecyclerAdapter
+    private lateinit var mAdapter: NewsRecyclerAdapter
 
     private fun fetchData() {
         val url = "https://perludilindungi.herokuapp.com/api/get-news"
@@ -42,7 +42,7 @@ class NewsFragment : Fragment() {
 
             }
         )
-        //MySingleton.getInstance(this).addToRequestQueue(jsonObjectRequest)
+        MySingleton.getInstance(requireActivity()).addToRequestQueue(jsonObjectRequest)
     }
 
     companion object {
@@ -55,5 +55,19 @@ class NewsFragment : Fragment() {
     ): View? {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_news, container, false)
+    }
+
+    override fun onViewCreated(itemView: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(itemView, savedInstanceState)
+        recyclerView.layoutManager = LinearLayoutManager(activity)
+        fetchData()
+        mAdapter = NewsRecyclerAdapter(this)
+        recyclerView.adapter = mAdapter
+    }
+
+    override fun onItemClicked(item: News) {
+        //val intent = Intent(this, WebView::class.java)
+        //intent.putExtra("url", item.url)
+        //startActivity(intent)
     }
 }
