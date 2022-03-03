@@ -66,8 +66,18 @@ class NewsFragment : Fragment(), NewsItemFrClicked {
     }
 
     override fun onItemClicked(item: News) {
-        //val intent = Intent(this, WebView::class.java)
-        //intent.putExtra("url", item.url)
-        //startActivity(intent)
+
+        // Use bundle to exchange data between two fragments
+        val input = item.url
+        val bundle = Bundle()
+        bundle.putString("url",input)
+
+        // Change the fragment
+        val fragment = NewsArticleFragment()
+        fragment.arguments = bundle
+        val fr = requireActivity().supportFragmentManager.beginTransaction()
+        fr.replace(R.id.fragment_container,fragment)
+        fr.addToBackStack(null)
+        fr.commit()
     }
 }
