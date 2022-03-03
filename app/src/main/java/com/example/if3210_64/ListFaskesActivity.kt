@@ -1,18 +1,23 @@
 package com.example.if3210_64
 
+import android.Manifest
 import android.content.Context
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.os.Bundle
 import android.util.AttributeSet
 import android.view.View
 import android.widget.AutoCompleteTextView
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.ActivityCompat
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentTransaction
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.android.volley.Request
 import com.android.volley.toolbox.JsonObjectRequest
+import com.google.android.gms.location.FusedLocationProviderClient
+import com.google.android.gms.location.LocationServices
 
 class ListFaskesActivity : AppCompatActivity() {
 
@@ -23,6 +28,9 @@ class ListFaskesActivity : AppCompatActivity() {
     var provinces = ArrayList<String>()
     var kabupatens = ArrayList<String>()
     var faskesArray = ArrayList<Faskes>()
+    private lateinit var fusedLocationClient: FusedLocationProviderClient
+    var latitude : Double = 0.0
+    var longitude : Double = 0.0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -53,6 +61,31 @@ class ListFaskesActivity : AppCompatActivity() {
 
         })
         faskesRecyclerView.adapter = adapter
+
+//        Location stuff
+        fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
+    }
+
+    fun getLastKnownLocation() {
+        if (ActivityCompat.checkSelfPermission(
+                this,
+                Manifest.permission.ACCESS_FINE_LOCATION
+            ) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(
+                this,
+                Manifest.permission.ACCESS_COARSE_LOCATION
+            ) != PackageManager.PERMISSION_GRANTED
+        ) {
+            fusedLocationClient.lastLocation
+                .addOnSuccessListener { location->
+                    if (location != null) {
+                        latitude = location.latitude
+                        longitude = location.longitude
+                    }
+
+                }
+            return
+        }
+
     }
 
     override fun onCreateView(name: String, context: Context, attrs: AttributeSet): View? {
@@ -68,6 +101,7 @@ class ListFaskesActivity : AppCompatActivity() {
         fetchFaskes()
     }
     fun fetchFaskes(){
+        val distances = arrayListOf<Double>(Double.POSITIVE_INFINITY, Double.POSITIVE_INFINITY, Double.POSITIVE_INFINITY, Double.POSITIVE_INFINITY, Double.POSITIVE_INFINITY)
         val url = "https://perludilindungi.herokuapp.com/api/get-faskes-vaksinasi?province="+province+"&city="+kabupaten
         val jsonObjectRequest = JsonObjectRequest(
             Request.Method.GET,
@@ -93,7 +127,26 @@ class ListFaskesActivity : AppCompatActivity() {
                         faskesJsonObject.getString("kelas_rs"),
                         faskesJsonObject.getString("status")
                     )
-                    faskesArray.add(faskes)
+                    val curLat = faskesJsonObject.getString("latitude").toDouble()
+                    val curLong = faskesJsonObject.getString("longitude").toDouble()
+                    val curDist = distance(latitude, longitude, curLat, curLong)
+
+                    for (j in 0 until distances.size){
+                        if(curDist < distances[j]){
+                            distances.add(j, curDist)
+                            distances.removeLast()
+                            if(faskesArray.size <= j){
+                                faskesArray.add(faskes)
+                            } else {
+                                faskesArray.add(j, faskes)
+                            }
+
+                            if(faskesArray.size > 5){
+                                faskesArray.removeLast()
+                            }
+                            break
+                        }
+                    }
                 }
                 adapter?.updateFaskes(faskesArray)
             },
@@ -170,5 +223,26 @@ class ListFaskesActivity : AppCompatActivity() {
             }
         )
         MySingleton.getInstance(this).addToRequestQueue(jsonObjectRequest)
+    }
+
+    private fun distance(lat1: Double, lon1: Double, lat2: Double, lon2: Double): Double {
+        val theta = lon1 - lon2
+        var dist = (Math.sin(deg2rad(lat1))
+                * Math.sin(deg2rad(lat2))
+                + (Math.cos(deg2rad(lat1))
+                * Math.cos(deg2rad(lat2))
+                * Math.cos(deg2rad(theta))))
+        dist = Math.acos(dist)
+        dist = rad2deg(dist)
+        dist = dist * 60 * 1.1515
+        return dist
+    }
+
+    private fun deg2rad(deg: Double): Double {
+        return deg * Math.PI / 180.0
+    }
+
+    private fun rad2deg(rad: Double): Double {
+        return rad * 180.0 / Math.PI
     }
 }

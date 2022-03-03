@@ -14,7 +14,7 @@ class MainActivity : AppCompatActivity() {
         supportActionBar?.hide()
 
         Handler().postDelayed({
-            val intent = Intent(this@MainActivity, ListBookmarkActivity::class.java)
+            val intent = Intent(this@MainActivity, ListFaskesActivity::class.java)
             startActivity(intent)
         }, 3000)
     }
