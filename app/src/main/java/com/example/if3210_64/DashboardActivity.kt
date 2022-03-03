@@ -3,14 +3,15 @@ package com.example.if3210_64
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.fragment.app.Fragment
+import com.example.if3210_64.fragments.ListFaskesFragment
 import com.example.if3210_64.fragments.NewsFragment
 import kotlinx.android.synthetic.main.activity_dashboard.*
 
 class DashboardActivity : AppCompatActivity() {
 
     private val newsFragment = NewsFragment()
-    // private val locationFragment = locationFragment()
-    // private val bookmarkFragment = bookmarkFragment()
+    private val listFaskesFragment = ListFaskesFragment()
+    // private val listBookmarkFragment = ListBookmarkFragment()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -20,8 +21,8 @@ class DashboardActivity : AppCompatActivity() {
         bottom_navigation.setOnNavigationItemSelectedListener {
             when(it.itemId) {
                 R.id.ic_news -> replaceFragment(newsFragment)
-                //R.id.ic_location -> replaceFragment(locationFragment)
-                //R.id.ic_bookmark -> replaceFragment(bookmarkFragment)
+                R.id.ic_location -> replaceFragment(listFaskesFragment)
+                //R.id.ic_bookmark -> replaceFragment(listBookmarkFragment)
             }
             true
         }
