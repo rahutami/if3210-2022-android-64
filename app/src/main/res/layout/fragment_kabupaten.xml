@@ -41,8 +41,7 @@
                 tools:text="Kabupaten" />
         </com.google.android.material.textfield.TextInputLayout>
         <Button
-            android:id="@+id/button_Province"
-            android:onClick="changeKabupaten"
+            android:id="@+id/button_Kabupaten"
             android:layout_width="140dp"
             android:layout_height="wrap_content"
             android:text="Cari\nFaskes"

@@ -10,6 +10,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.AutoCompleteTextView
+import android.widget.Button
 import androidx.core.app.ActivityCompat
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentTransaction
@@ -20,8 +21,10 @@ import com.android.volley.toolbox.JsonObjectRequest
 import com.example.if3210_64.*
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
+import kotlinx.android.synthetic.main.fragment_kabupaten.view.*
+import kotlinx.android.synthetic.main.fragment_province.view.*
 
-class ListFaskesFragment : Fragment() {
+class ListFaskesFragment : Fragment(), View.OnClickListener {
 
     private var layoutManager: RecyclerView.LayoutManager? = null
     private var adapter: FaskesRecyclerAdapter? = null
@@ -31,8 +34,8 @@ class ListFaskesFragment : Fragment() {
     var kabupatens = ArrayList<String>()
     var faskesArray = ArrayList<Faskes>()
     private lateinit var fusedLocationClient: FusedLocationProviderClient
-    var latitude : Double = 0.0
-    var longitude : Double = 0.0
+    var latitude: Double = 0.0
+    var longitude: Double = 0.0
 
     fun getLastKnownLocation() {
         if (ActivityCompat.checkSelfPermission(
@@ -44,7 +47,7 @@ class ListFaskesFragment : Fragment() {
             ) != PackageManager.PERMISSION_GRANTED
         ) {
             fusedLocationClient.lastLocation
-                .addOnSuccessListener { location->
+                .addOnSuccessListener { location ->
                     if (location != null) {
                         latitude = location.latitude
                         longitude = location.longitude
@@ -56,9 +59,16 @@ class ListFaskesFragment : Fragment() {
 
     }
 
-    fun fetchFaskes(){
-        val distances = arrayListOf<Double>(Double.POSITIVE_INFINITY, Double.POSITIVE_INFINITY, Double.POSITIVE_INFINITY, Double.POSITIVE_INFINITY, Double.POSITIVE_INFINITY)
-        val url = "https://perludilindungi.herokuapp.com/api/get-faskes-vaksinasi?province="+province+"&city="+kabupaten
+    fun fetchFaskes() {
+        val distances = arrayListOf<Double>(
+            Double.POSITIVE_INFINITY,
+            Double.POSITIVE_INFINITY,
+            Double.POSITIVE_INFINITY,
+            Double.POSITIVE_INFINITY,
+            Double.POSITIVE_INFINITY
+        )
+        val url =
+            "https://perludilindungi.herokuapp.com/api/get-faskes-vaksinasi?province=" + province + "&city=" + kabupaten
         val jsonObjectRequest = JsonObjectRequest(
             Request.Method.GET,
             url,
@@ -87,17 +97,17 @@ class ListFaskesFragment : Fragment() {
                     val curLong = faskesJsonObject.getString("longitude").toDouble()
                     val curDist = distance(latitude, longitude, curLat, curLong)
 
-                    for (j in 0 until distances.size){
-                        if(curDist < distances[j]){
+                    for (j in 0 until distances.size) {
+                        if (curDist < distances[j]) {
                             distances.add(j, curDist)
                             distances.removeLast()
-                            if(faskesArray.size <= j){
+                            if (faskesArray.size <= j) {
                                 faskesArray.add(faskes)
                             } else {
                                 faskesArray.add(j, faskes)
                             }
 
-                            if(faskesArray.size > 5){
+                            if (faskesArray.size > 5) {
                                 faskesArray.removeLast()
                             }
                             break
@@ -114,10 +124,10 @@ class ListFaskesFragment : Fragment() {
         MySingleton.getInstance(requireActivity()).addToRequestQueue(jsonObjectRequest)
     }
 
-    fun fetchKabupaten(){
+    fun fetchKabupaten() {
         kabupatens.clear()
 
-        val url = "https://perludilindungi.herokuapp.com/api/get-city?start_id="+province
+        val url = "https://perludilindungi.herokuapp.com/api/get-city?start_id=" + province
         println(url)
 
         val jsonObjectRequest = JsonObjectRequest(
@@ -139,7 +149,7 @@ class ListFaskesFragment : Fragment() {
 
                 val bundle = Bundle()
                 bundle.putStringArrayList("kabupatenList", kabupatens)
-                kFragment.arguments  = bundle
+                kFragment.arguments = bundle
                 fragmentTransaction.replace(R.id.kabupaten_fragment, kFragment).commit()
             },
             {
@@ -149,7 +159,8 @@ class ListFaskesFragment : Fragment() {
         )
         MySingleton.getInstance(requireActivity()).addToRequestQueue(jsonObjectRequest)
     }
-    fun fetchProvince(){
+
+    fun fetchProvince() {
         val url = "https://perludilindungi.herokuapp.com/api/get-province"
         println(url)
         val jsonObjectRequest = JsonObjectRequest(
@@ -171,7 +182,7 @@ class ListFaskesFragment : Fragment() {
 
                 val bundle = Bundle()
                 bundle.putStringArrayList("provinceList", provinces)
-                provinceFragment.arguments  = bundle
+                provinceFragment.arguments = bundle
                 fragmentTransaction.replace(R.id.province_fragment, provinceFragment).commit()
             },
             {
@@ -182,13 +193,15 @@ class ListFaskesFragment : Fragment() {
         MySingleton.getInstance(requireActivity()).addToRequestQueue(jsonObjectRequest)
     }
 
-    fun changeProvince(view: View){
-        province = view.findViewById<AutoCompleteTextView>(R.id.autoCompleteProvince)?.text.toString()
+    fun changeProvince(view: View) {
+        province =
+            view.findViewById<AutoCompleteTextView>(R.id.autoCompleteProvince)?.text.toString()
         fetchKabupaten()
     }
 
-    fun changeKabupaten(view: View){
-        kabupaten = view.findViewById<AutoCompleteTextView>(R.id.autoCompleteKabupaten)?.text.toString()
+    fun changeKabupaten(view: View) {
+        kabupaten =
+            view.findViewById<AutoCompleteTextView>(R.id.autoCompleteKabupaten)?.text.toString()
         fetchFaskes()
     }
 
@@ -213,64 +226,85 @@ class ListFaskesFragment : Fragment() {
         return rad * 180.0 / Math.PI
     }
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-    }
-
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_list_faskes, container, false)
-    }
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-
-        layoutManager = LinearLayoutManager(activity)
-
-        //        sending data to province fragment
-        val fragmentManager: FragmentManager = requireActivity().supportFragmentManager
-        val fragmentTransaction: FragmentTransaction = fragmentManager.beginTransaction()
-        val provinceFragment = ProvinceFragment()
-
-        val bundle = Bundle()
-        fetchProvince()
-        bundle.putStringArrayList("provinceList", provinces)
-        provinceFragment.arguments  = bundle
-        fragmentTransaction.replace(R.id.province_fragment, provinceFragment).commit()
-
-        //        recycler view stuff
-        val faskesRecyclerView = view.findViewById<RecyclerView>(R.id.faskesRecyclerView)
-        faskesRecyclerView.layoutManager = layoutManager
-        adapter = FaskesRecyclerAdapter()
-        adapter!!.setOnItemClickListener(object: FaskesRecyclerAdapter.onItemClickListener{
-            override fun onItemClick(position: Int) {
-
-                // Use Bundle to exchange data between two fragments
-                val input = faskesArray[position]
-                val bundle = Bundle()
-                bundle.putParcelableArrayList("input",faskesArray[position] as ArrayList<out Parcelable>)
-
-                /*// Change the fragment
-                val fragment = DetailFaskesFragment()
-                fragment.arguments = bundle
-                val fr = requireActivity().supportFragmentManager.beginTransaction()
-                fr.replace(R.id.fragment_container,fragment)
-                fr.addToBackStack(null)
-                fr.commit()*/
-
-
-                //val intent = Intent(@ListFaskesActivity, DetailFaskesActivity::class.java)
-                //intent.putExtra("faskes", faskesArray[position])
-                //startActivity(intent)
+        override fun onClick(v: View) {
+            println(v.getId())
+            when (v.getId()) {
+                R.id.button_Province -> {
+                    changeProvince(v)
+                }
+                R.id.button_Kabupaten -> {
+                    changeKabupaten(v)
+                }
             }
+        }
 
-        })
-        faskesRecyclerView.adapter = adapter
+        override fun onCreate(savedInstanceState: Bundle?) {
+            super.onCreate(savedInstanceState)
+        }
 
-        //        Location stuff
-        fusedLocationClient = LocationServices.getFusedLocationProviderClient(activity)
+        override fun onCreateView(
+            inflater: LayoutInflater, container: ViewGroup?,
+            savedInstanceState: Bundle?
+        ): View? {
+            // Inflate the layout for this fragment
+
+            // onclick listener stuff
+            //view?.button_Kabupaten?.setOnClickListener();
+            //view?.button_Province?.setOnClickListener(clickListener);
+            return inflater.inflate(R.layout.fragment_list_faskes, container, false)
+        }
+
+        override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+            super.onViewCreated(view, savedInstanceState)
+
+            layoutManager = LinearLayoutManager(activity)
+
+            //        sending data to province fragment
+            val fragmentManager: FragmentManager = requireActivity().supportFragmentManager
+            val fragmentTransaction: FragmentTransaction = fragmentManager.beginTransaction()
+            val provinceFragment = ProvinceFragment()
+
+            val bundle = Bundle()
+            fetchProvince()
+            bundle.putStringArrayList("provinceList", provinces)
+            provinceFragment.arguments = bundle
+            fragmentTransaction.replace(R.id.province_fragment, provinceFragment).commit()
+
+            //        recycler view stuff
+            val faskesRecyclerView = view.findViewById<RecyclerView>(R.id.faskesRecyclerView)
+            faskesRecyclerView.layoutManager = layoutManager
+            adapter = FaskesRecyclerAdapter()
+            adapter!!.setOnItemClickListener(object : FaskesRecyclerAdapter.onItemClickListener {
+                override fun onItemClick(position: Int) {
+
+                    // Use Bundle to exchange data between two fragments
+                    val input = faskesArray[position]
+                    val bundle = Bundle()
+                    bundle.putParcelableArrayList(
+                        "input",
+                        faskesArray[position] as ArrayList<out Parcelable>
+                    )
+
+                    /*// Change the fragment
+                    val fragment = DetailFaskesFragment()
+                    fragment.arguments = bundle
+                    val fr = requireActivity().supportFragmentManager.beginTransaction()
+                    fr.replace(R.id.fragment_container,fragment)
+                    fr.addToBackStack(null)
+                    fr.commit()*/
+
+
+                    //val intent = Intent(@ListFaskesActivity, DetailFaskesActivity::class.java)
+                    //intent.putExtra("faskes", faskesArray[position])
+                    //startActivity(intent)
+                }
+
+            })
+            faskesRecyclerView.adapter = adapter
+
+            //        Location stuff
+            fusedLocationClient = LocationServices.getFusedLocationProviderClient(requireActivity())
+
+
+        }
     }
-}

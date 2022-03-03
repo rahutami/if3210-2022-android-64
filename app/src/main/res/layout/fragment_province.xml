@@ -48,7 +48,6 @@
             android:id="@+id/button_Province"
             android:layout_width="140dp"
             android:layout_height="wrap_content"
-            android:onClick="changeProvince"
             android:text="Cari\nKabupaten"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/textInputProvince"
