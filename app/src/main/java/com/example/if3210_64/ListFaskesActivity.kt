@@ -176,6 +176,7 @@ class ListFaskesActivity : AppCompatActivity() {
 //        MySingleton.getInstance(this).addToRequestQueue(jsonObjectRequest)
     }
     fun fetchProvince(){
+        val url = "https://perludilindungi.herokuapp.com/api/get-province"
         provinces.add("Jakarta")
         provinces.add("Yogyakarta")
     }

@@ -1,6 +1,8 @@
 package com.example.if3210_64
 
 import android.annotation.SuppressLint
+import android.content.Intent
+import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
@@ -68,5 +70,19 @@ class DetailFaskesActivity : AppCompatActivity() {
         }
 
         db.addBokmark(faskes)
+    }
+
+    fun onClickMap(view: View){
+        // Create a Uri from an intent string. Use the result to create an Intent.
+        val uri = "geo:${faskes.latitude},${faskes.longitude}?q=${Uri.encode(faskes.nama)}?z=20"
+        val gmmIntentUri = Uri.parse(uri)
+
+        // Create an Intent from gmmIntentUri. Set the action to ACTION_VIEW
+        val mapIntent = Intent(Intent.ACTION_VIEW, gmmIntentUri)
+        // Make the Intent explicit by setting the Google Maps package
+        mapIntent.setPackage("com.google.android.apps.maps")
+
+        // Attempt to start an activity that can handle the Intent
+        startActivity(mapIntent)
     }
 }
