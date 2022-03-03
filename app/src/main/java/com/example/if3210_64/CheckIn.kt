@@ -1,36 +1,31 @@
 package com.example.if3210_64
 
 import android.Manifest
-import android.app.Activity
 import android.app.AlertDialog
 import android.content.Context
+import android.content.DialogInterface
+import android.content.Intent
 import android.content.pm.PackageManager
 import android.hardware.Sensor
 import android.hardware.SensorEvent
 import android.hardware.SensorEventListener
 import android.hardware.SensorManager
+import android.location.LocationManager
 import android.os.Bundle
-import android.util.Log
+import android.os.Looper
+import android.provider.Settings
 import android.widget.TextView
 import android.widget.Toast
-import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
-import androidx.core.content.ContextCompat
 import com.budiyev.android.codescanner.*
 import com.google.android.gms.location.FusedLocationProviderClient
+import com.google.android.gms.location.LocationCallback
+import com.google.android.gms.location.LocationRequest
 import com.google.android.gms.location.LocationServices
-import com.google.gson.GsonBuilder
-import com.google.gson.JsonParser
-import org.json.JSONObject
-import retrofit2.Retrofit
-import retrofit2.converter.gson.GsonConverterFactory
-import com.android.volley.Request
-import com.android.volley.Response
-import com.android.volley.toolbox.JsonObjectRequest
-import kotlinx.android.synthetic.main.activity_main.*
-import java.io.IOException
-import java.security.Permission
+import retrofit2.Call
+import retrofit2.Callback
+
 
 class CheckIn : AppCompatActivity(), SensorEventListener {
     private lateinit var codeScanner: CodeScanner
@@ -61,7 +56,17 @@ class CheckIn : AppCompatActivity(), SensorEventListener {
             requestPermissions(arrayOf(Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION),0)
         }
 
+        val locationRequest = LocationRequest()
+        val locationCallback = LocationCallback()
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
+        fusedLocationClient.requestLocationUpdates(locationRequest,
+            locationCallback,
+            Looper.getMainLooper())
+
+        val manager = getSystemService(LOCATION_SERVICE) as LocationManager
+        if (!manager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
+            buildAlertMessageNoGps()
+        }
 
         // Thermometer
         sensorManager = getSystemService(Context.SENSOR_SERVICE) as SensorManager
@@ -89,6 +94,7 @@ class CheckIn : AppCompatActivity(), SensorEventListener {
                     Toast.LENGTH_LONG
                 ).show()
             }
+            return@ErrorCallback
         }
         scannerView.setOnClickListener {
             codeScanner.startPreview()
@@ -128,7 +134,6 @@ class CheckIn : AppCompatActivity(), SensorEventListener {
     }
 
     private fun post(qr: String) {
-
         if (ActivityCompat.checkSelfPermission(
                 this,
                 Manifest.permission.ACCESS_FINE_LOCATION
@@ -137,83 +142,68 @@ class CheckIn : AppCompatActivity(), SensorEventListener {
                 Manifest.permission.ACCESS_COARSE_LOCATION
             ) != PackageManager.PERMISSION_GRANTED
         ) {
-            // TODO: Consider calling
-            //    ActivityCompat#requestPermissions
-            // here to request the missing permissions, and then overriding
-            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-            //                                          int[] grantResults)
-            // to handle the case where the user grants the permission. See the documentation
-            // for ActivityCompat#requestPermissions for more details.
             requestPermissions(arrayOf(Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION),0)
             return
         }
         fusedLocationClient.lastLocation
-            .addOnSuccessListener(this) { location->
-                if (location != null) {
-                    var response = makeRequest(qr, location.latitude, location.longitude)
-                    Toast.makeText(this, response.toString(), Toast.LENGTH_LONG).show()
-                    if (response.success) {
-                        val builder: AlertDialog.Builder? = this.let {
-                            AlertDialog.Builder(it)
-                        }
-
-                        builder?.setMessage("Berhasil")
-
-                        builder?.create()
-                        Toast.makeText(this, response.message, Toast.LENGTH_LONG).show()
-                    }
-                    else {
-                        Toast.makeText(this, response.message, Toast.LENGTH_LONG).show()
-                    }
+            .addOnCompleteListener(this) { location->
+                if (location!!.result != null) {
+                    NetworkConfig().getService()
+                        .createPost(
+                            qr,
+                            location.result!!.latitude,
+                            location.result!!.longitude
+                        )
+                        .enqueue(object : Callback<QrCodeResponse> {
+                            override fun onFailure(call: Call<QrCodeResponse>, t: Throwable) {
+                                Toast.makeText(this@CheckIn, t.localizedMessage, Toast.LENGTH_SHORT).show()
+                            }
+                            override fun onResponse(
+                                call: Call<QrCodeResponse>,
+                                response: retrofit2.Response<QrCodeResponse>
+                            ) {
+                                if (response.isSuccessful) {
+                                    showDialog(response.body()!!.data.userStatus, response.body()!!.data.reason)
+                                }
+                                else {
+                                    Toast.makeText(this@CheckIn, "Bad Request", Toast.LENGTH_LONG).show()
+                                }
+                            }
+                        })
                 }
                 else {
-                        // can not find location
-                    Toast.makeText(this, location, Toast.LENGTH_LONG).show()
+                    // can not find location
+                    buildAlertMessageNoGps()
                 }
             }
     }
 
-    private fun makeRequest(qr: String, lat: Double, long: Double): QrCodeResponse {
-        val url = "https://perludilindungi.herokuapp.com/check-in/"
-        var data = Data("", "")
-        var response = QrCodeResponse(
-            false,
-            0,
-            "Error fetch",
-            data
-        )
-        val msg = JSONObject()
-        msg.put("qrCode", qr)
-        msg.put("latitude", lat)
-        msg.put("longitude", long)
-        val jsonObjectRequest = JsonObjectRequest(
-            Request.Method.POST,
-            url,
-            msg,
-            {
-                data = Data(
-                    it.getJSONObject("data").getString("userStatus"),
-                    it.getJSONObject("data").getString("reason")
-                )
-                response = QrCodeResponse(
-                    it.getBoolean("success"),
-                    it.getInt("code"),
-                    it.getString("message"),
-                    data
-                )
-            },
-            {
-                response = QrCodeResponse(
-                    false,
-                    0,
-                    "Err",
-                    data
-                )
-            }
-        )
-        return response
+    fun showDialog(color: String, reason: String) {
+        val fragmentManager = supportFragmentManager
+        val newFragment  = if (color == "green"){
+            DialogCheckIn(true, reason)
+        } else {
+            DialogCheckIn(false, reason)
+        }
+        newFragment.show(fragmentManager, "dialog")
     }
 
-
+    private fun buildAlertMessageNoGps() {
+        var builder = AlertDialog.Builder(this);
+        builder.setMessage("Your GPS seems to be disabled, do you want to enable it?")
+            .setCancelable(false)
+            .setPositiveButton("OK",
+                DialogInterface.OnClickListener { dialog, id ->
+                    // sign in the user ..
+                    startActivity(Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS))
+                    dialog.cancel();
+            })
+            .setNegativeButton("Cancel",
+                DialogInterface.OnClickListener { dialog, id ->
+                    dialog.cancel()
+                })
+        var alert = builder.create();
+        alert.show();
+    }
 }
 

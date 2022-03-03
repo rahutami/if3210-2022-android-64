@@ -56,6 +56,7 @@ dependencies {
     // Okhttp3 for the POST requests
     implementation 'com.squareup.okhttp3:okhttp:4.9.0'
     implementation 'com.squareup.retrofit2:converter-gson:2.0.2'
+    implementation("com.squareup.okhttp3:logging-interceptor:4.9.0")
 
     // Gson (To convert raw JSON to pretty JSON)
     implementation 'com.google.code.gson:gson:2.8.9'
@@ -65,4 +66,6 @@ dependencies {
     implementation 'androidx.activity:activity:1.4.0'
     implementation 'androidx.fragment:fragment:1.4.1'
 
+    // volley network
+    implementation 'com.android.volley:volley:1.1.1'
 }
