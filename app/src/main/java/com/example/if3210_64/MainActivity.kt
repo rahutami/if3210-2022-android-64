@@ -16,6 +16,7 @@ class MainActivity : AppCompatActivity() {
         Handler().postDelayed({
             val intent = Intent(this@MainActivity, DashboardActivity::class.java)
             startActivity(intent)
+            finish()
         }, 3000)
     }
 }
