@@ -1,6 +1,5 @@
 package com.example.if3210_64.fragments
 
-import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -70,13 +69,13 @@ class NewsFragment : Fragment(), NewsItemFrClicked {
         // Use bundle to exchange data between two fragments
         val input = item.url
         val bundle = Bundle()
-        bundle.putString("url",input)
+        bundle.putString("url", input)
 
         // Change the fragment
         val fragment = NewsArticleFragment()
         fragment.arguments = bundle
         val fr = requireActivity().supportFragmentManager.beginTransaction()
-        fr.replace(R.id.fragment_container,fragment)
+        fr.replace(R.id.fragment_container, fragment)
         fr.addToBackStack(null)
         fr.commit()
     }

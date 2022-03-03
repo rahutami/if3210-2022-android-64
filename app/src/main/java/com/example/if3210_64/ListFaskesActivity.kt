@@ -7,7 +7,6 @@ import android.content.pm.PackageManager
 import android.os.Bundle
 import android.util.AttributeSet
 import android.view.View
-import android.widget.AutoCompleteTextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.fragment.app.FragmentManager
@@ -29,8 +28,8 @@ class ListFaskesActivity : AppCompatActivity() {
     var kabupatens = ArrayList<String>()
     var faskesArray = ArrayList<Faskes>()
     private lateinit var fusedLocationClient: FusedLocationProviderClient
-    var latitude : Double = 0.0
-    var longitude : Double = 0.0
+    var latitude: Double = 0.0
+    var longitude: Double = 0.0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -45,14 +44,14 @@ class ListFaskesActivity : AppCompatActivity() {
         val bundle = Bundle()
         fetchProvince()
         bundle.putStringArrayList("provinceList", provinces)
-        provinceFragment.arguments  = bundle
+        provinceFragment.arguments = bundle
         fragmentTransaction.replace(R.id.province_fragment, provinceFragment).commit()
 
 //        recycler view stuff
         val faskesRecyclerView = findViewById<RecyclerView>(R.id.faskesRecyclerView)
         faskesRecyclerView.layoutManager = layoutManager
         adapter = FaskesRecyclerAdapter()
-        adapter!!.setOnItemClickListener(object: FaskesRecyclerAdapter.onItemClickListener{
+        adapter!!.setOnItemClickListener(object : FaskesRecyclerAdapter.onItemClickListener {
             override fun onItemClick(position: Int) {
                 val intent = Intent(this@ListFaskesActivity, DetailFaskesActivity::class.java)
                 intent.putExtra("faskes", faskesArray[position])
@@ -76,7 +75,7 @@ class ListFaskesActivity : AppCompatActivity() {
             ) != PackageManager.PERMISSION_GRANTED
         ) {
             fusedLocationClient.lastLocation
-                .addOnSuccessListener { location->
+                .addOnSuccessListener { location ->
                     if (location != null) {
                         latitude = location.latitude
                         longitude = location.longitude
@@ -88,9 +87,6 @@ class ListFaskesActivity : AppCompatActivity() {
 
     }
 
-    override fun onCreateView(name: String, context: Context, attrs: AttributeSet): View? {
-        return super.onCreateView(name, context, attrs)
-    }
     /*fun changeProvince(view: View){
         province = findViewById<AutoCompleteTextView>(R.id.autoCompleteProvince)?.text.toString()
 
@@ -100,9 +96,16 @@ class ListFaskesActivity : AppCompatActivity() {
         kabupaten = findViewById<AutoCompleteTextView>(R.id.autoCompleteKabupaten)?.text.toString()
         fetchFaskes()
     }*/
-    fun fetchFaskes(){
-        val distances = arrayListOf<Double>(Double.POSITIVE_INFINITY, Double.POSITIVE_INFINITY, Double.POSITIVE_INFINITY, Double.POSITIVE_INFINITY, Double.POSITIVE_INFINITY)
-        val url = "https://perludilindungi.herokuapp.com/api/get-faskes-vaksinasi?province="+province+"&city="+kabupaten
+    fun fetchFaskes() {
+        val distances = arrayListOf<Double>(
+            Double.POSITIVE_INFINITY,
+            Double.POSITIVE_INFINITY,
+            Double.POSITIVE_INFINITY,
+            Double.POSITIVE_INFINITY,
+            Double.POSITIVE_INFINITY
+        )
+        val url =
+            "https://perludilindungi.herokuapp.com/api/get-faskes-vaksinasi?province=" + province + "&city=" + kabupaten
         val jsonObjectRequest = JsonObjectRequest(
             Request.Method.GET,
             url,
@@ -131,17 +134,17 @@ class ListFaskesActivity : AppCompatActivity() {
                     val curLong = faskesJsonObject.getString("longitude").toDouble()
                     val curDist = distance(latitude, longitude, curLat, curLong)
 
-                    for (j in 0 until distances.size){
-                        if(curDist < distances[j]){
+                    for (j in 0 until distances.size) {
+                        if (curDist < distances[j]) {
                             distances.add(j, curDist)
                             distances.removeLast()
-                            if(faskesArray.size <= j){
+                            if (faskesArray.size <= j) {
                                 faskesArray.add(faskes)
                             } else {
                                 faskesArray.add(j, faskes)
                             }
 
-                            if(faskesArray.size > 5){
+                            if (faskesArray.size > 5) {
                                 faskesArray.removeLast()
                             }
                             break
@@ -157,10 +160,11 @@ class ListFaskesActivity : AppCompatActivity() {
         )
         MySingleton.getInstance(this).addToRequestQueue(jsonObjectRequest)
     }
-    fun fetchKabupaten(){
+
+    fun fetchKabupaten() {
         kabupatens.clear()
 
-        val url = "https://perludilindungi.herokuapp.com/api/get-city?start_id="+province
+        val url = "https://perludilindungi.herokuapp.com/api/get-city?start_id=" + province
         println(url)
 
         val jsonObjectRequest = JsonObjectRequest(
@@ -182,7 +186,7 @@ class ListFaskesActivity : AppCompatActivity() {
 
                 val bundle = Bundle()
                 bundle.putStringArrayList("kabupatenList", kabupatens)
-                kFragment.arguments  = bundle
+                kFragment.arguments = bundle
                 fragmentTransaction.replace(R.id.kabupaten_fragment, kFragment).commit()
             },
             {
@@ -192,7 +196,8 @@ class ListFaskesActivity : AppCompatActivity() {
         )
         MySingleton.getInstance(this).addToRequestQueue(jsonObjectRequest)
     }
-    fun fetchProvince(){
+
+    fun fetchProvince() {
         val url = "https://perludilindungi.herokuapp.com/api/get-province"
         println(url)
         val jsonObjectRequest = JsonObjectRequest(
@@ -214,7 +219,7 @@ class ListFaskesActivity : AppCompatActivity() {
 
                 val bundle = Bundle()
                 bundle.putStringArrayList("provinceList", provinces)
-                provinceFragment.arguments  = bundle
+                provinceFragment.arguments = bundle
                 fragmentTransaction.replace(R.id.province_fragment, provinceFragment).commit()
             },
             {

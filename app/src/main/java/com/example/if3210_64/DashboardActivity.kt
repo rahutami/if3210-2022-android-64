@@ -1,8 +1,8 @@
 package com.example.if3210_64
 
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import com.example.if3210_64.fragments.ListBookmarkFragment
 import com.example.if3210_64.fragments.ListFaskesFragment
@@ -21,7 +21,7 @@ class DashboardActivity : AppCompatActivity() {
         replaceFragment(newsFragment)
 
         bottom_navigation.setOnNavigationItemSelectedListener {
-            when(it.itemId) {
+            when (it.itemId) {
                 R.id.ic_news -> replaceFragment(newsFragment)
                 R.id.ic_location -> replaceFragment(listFaskesFragment)
                 R.id.ic_bookmark -> replaceFragment(listBookmarkFragment)

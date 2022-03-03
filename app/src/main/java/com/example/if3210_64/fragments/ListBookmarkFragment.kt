@@ -3,11 +3,11 @@ package com.example.if3210_64.fragments
 import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.if3210_64.*
@@ -28,7 +28,7 @@ class ListBookmarkFragment : Fragment() {
         val bookmarkRecyclerView = view?.findViewById<RecyclerView>(R.id.bookmarkRecyclerView)
         bookmarkRecyclerView?.layoutManager = layoutManager
         adapter = FaskesRecyclerAdapter()
-        adapter!!.setOnItemClickListener(object: FaskesRecyclerAdapter.onItemClickListener{
+        adapter!!.setOnItemClickListener(object : FaskesRecyclerAdapter.onItemClickListener {
             override fun onItemClick(position: Int) {
                 val intent = Intent(requireActivity(), DetailFaskesActivity::class.java)
                 intent.putExtra("faskes", faskesArray[position])
@@ -38,9 +38,13 @@ class ListBookmarkFragment : Fragment() {
         })
         bookmarkRecyclerView?.adapter = adapter
         fetchBookmark()
-        if(faskesArray.size > 0){
-            val warningBookmark = view?.findViewById<TextView>(R.id.warning_bookmark)
-            warningBookmark?.setVisibility(View.GONE)
+        val warningBookmark = view?.findViewById<TextView>(R.id.warning_bookmark)
+        if (faskesArray.size > 0) {
+            warningBookmark?.visibility = View.GONE
+            bookmarkRecyclerView?.visibility = View.VISIBLE
+        } else {
+            warningBookmark?.visibility = View.VISIBLE
+            bookmarkRecyclerView?.visibility = View.GONE
         }
     }
 
@@ -59,10 +63,10 @@ class ListBookmarkFragment : Fragment() {
         db = DBHelper(requireActivity(), null)
 
 //        recycler view stuff
-        val bookmarkRecyclerView = view?.findViewById<RecyclerView>(R.id.bookmarkRecyclerView)
+        val bookmarkRecyclerView = view.findViewById<RecyclerView>(R.id.bookmarkRecyclerView)
         bookmarkRecyclerView?.layoutManager = layoutManager
         adapter = FaskesRecyclerAdapter()
-        adapter!!.setOnItemClickListener(object: FaskesRecyclerAdapter.onItemClickListener{
+        adapter!!.setOnItemClickListener(object : FaskesRecyclerAdapter.onItemClickListener {
             override fun onItemClick(position: Int) {
                 val intent = Intent(requireActivity(), DetailFaskesActivity::class.java)
                 intent.putExtra("faskes", faskesArray[position])
@@ -72,28 +76,33 @@ class ListBookmarkFragment : Fragment() {
         })
         bookmarkRecyclerView?.adapter = adapter
         fetchBookmark()
-        if(faskesArray.size > 0){
-            val warningBookmark = view?.findViewById<TextView>(R.id.warning_bookmark)
-            warningBookmark?.setVisibility(View.GONE)
+        if (faskesArray.size > 0) {
+            val warningBookmark = view.findViewById<TextView>(R.id.warning_bookmark)
+            warningBookmark?.visibility = View.GONE
         }
     }
 
     override fun onResume() {
         fetchBookmark()
-        if(faskesArray.size > 0){
-            val warningBookmark = view?.findViewById<TextView>(R.id.warning_bookmark)
-            warningBookmark?.setVisibility(View.GONE)
+        val warningBookmark = view?.findViewById<TextView>(R.id.warning_bookmark)
+        val bookmarkRecyclerView = view?.findViewById<RecyclerView>(R.id.bookmarkRecyclerView)
+        if (faskesArray.size > 0) {
+            warningBookmark?.visibility = View.GONE
+            bookmarkRecyclerView?.visibility = View.VISIBLE
+        } else {
+            warningBookmark?.visibility = View.VISIBLE
+            bookmarkRecyclerView?.visibility = View.GONE
         }
         super.onResume()
     }
 
     @SuppressLint("Range")
-    fun fetchBookmark(){
+    fun fetchBookmark() {
         faskesArray.clear()
         val cursor = db.getBookmark()
 
         if (cursor != null) {
-            if(cursor.count == 0){
+            if (cursor.count == 0) {
                 return
             }
         }
@@ -112,10 +121,25 @@ class ListBookmarkFragment : Fragment() {
         val kelas_rs = cursor.getString(cursor.getColumnIndex(DBHelper.KELAS_COL))
         val status = cursor.getString(cursor.getColumnIndex(DBHelper.STATUS_COL))
 
-        faskesArray.add(Faskes(id, kode, nama, kota, provinsi, alamat, latitude, longitude, telp, jenis_faskes, kelas_rs, status))
+        faskesArray.add(
+            Faskes(
+                id,
+                kode,
+                nama,
+                kota,
+                provinsi,
+                alamat,
+                latitude,
+                longitude,
+                telp,
+                jenis_faskes,
+                kelas_rs,
+                status
+            )
+        )
         // moving our cursor to next
         // position and appending values
-        while(cursor.moveToNext()){
+        while (cursor.moveToNext()) {
             val id = cursor.getInt(cursor.getColumnIndex(DBHelper.ID_COL))
             val kode = cursor.getString(cursor.getColumnIndex(DBHelper.KODE_COL))
             val nama = cursor.getString(cursor.getColumnIndex(DBHelper.NAME_COl))
@@ -131,12 +155,28 @@ class ListBookmarkFragment : Fragment() {
 
             println("${id} ${nama}")
 
-            faskesArray.add(Faskes(id, kode, nama, kota, provinsi, alamat, latitude, longitude, telp, jenis_faskes, kelas_rs, status))
+            faskesArray.add(
+                Faskes(
+                    id,
+                    kode,
+                    nama,
+                    kota,
+                    provinsi,
+                    alamat,
+                    latitude,
+                    longitude,
+                    telp,
+                    jenis_faskes,
+                    kelas_rs,
+                    status
+                )
+            )
         }
 
         // at last we close our cursor
         cursor.close()
 
+        println(faskesArray.toString())
         adapter?.updateFaskes(faskesArray)
     }
 }

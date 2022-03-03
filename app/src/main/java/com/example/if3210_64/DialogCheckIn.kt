@@ -6,17 +6,14 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.Window
-import android.widget.EditText
 import androidx.fragment.app.DialogFragment
-import kotlinx.android.synthetic.main.dialog_check_in.*
-import android.widget.TextView
-import android.widget.ImageView
 import kotlinx.android.synthetic.main.dialog_check_in.view.*
 
 class DialogCheckIn(success: Boolean, reason: String) : DialogFragment() {
 
     val success = success
     val reason = reason
+
     /** The system calls this to get the DialogFragment's layout, regardless
     of whether it's being displayed as a dialog or an embedded fragment. */
     override fun onCreateView(
@@ -30,8 +27,7 @@ class DialogCheckIn(success: Boolean, reason: String) : DialogFragment() {
             view.title_text.text = "Berhasil"
             view.subtitle_text.text = ""
             view.imageView.setImageResource(R.mipmap.green)
-        }
-        else {
+        } else {
             view.title_text.text = "Gagal"
             view.subtitle_text.text = reason
             view.imageView.setImageResource(R.mipmap.red)
@@ -40,7 +36,7 @@ class DialogCheckIn(success: Boolean, reason: String) : DialogFragment() {
     }
 
     /** The system calls this only when creating the layout in a dialog. */
-     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
+    override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         // The only reason you might override this method when using onCreateView() is
         // to modify any dialog characteristics. For example, the dialog includes a
         // title by default, but your custom layout might not need it. So here you can
