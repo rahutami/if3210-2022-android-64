@@ -25,6 +25,7 @@ Aplikasi ini dapat:
 
 ## Library
 * News: Volley digunakan untuk melakukan fetch data dari API Berita PerluDilindungi, Volley digunakan karena lebih cepat dari HttpURLConnection dan menghemat waktu. Selain itu Volley juga lebih mudah digunakan dan lebih sederhana.
+* Check In: Library budiyev digunakan untuk melakukan setup scan QR code, mulai dari persiapan akses kamera hingga mengubah hasil QR code dalam bentuk string. Selain itu, digunakan juga library Retrofit untuk melakukan post ke API Server PerluDilindungi karena mudah dalam membangunnya serta dapat membuat code yang lebih terstruktur, baik dari API interface, kelas request dan response, serta API call dalam program utama.
 
 ## Screenshot aplikasi
 <!-- show all pictures from screenshots/ -->

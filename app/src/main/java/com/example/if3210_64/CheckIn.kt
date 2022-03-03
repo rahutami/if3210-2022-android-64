@@ -210,7 +210,6 @@ class CheckIn : AppCompatActivity(), SensorEventListener {
             .setCancelable(false)
             .setPositiveButton("OK",
                 DialogInterface.OnClickListener { dialog, id ->
-                    // sign in the user ..
                     startActivity(Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS))
                     dialog.cancel()
                 })
