@@ -24,7 +24,7 @@ Aplikasi ini dapat:
     * Jika respon API sukses, maka akan muncul pop up berhasil atau gagal check in berdasarkan pesan QR code. Jika respon API gagal, maka akan muncul pesan error
 
 ## Library
-
+* News: Volley digunakan untuk melakukan fetch data dari API Berita PerluDilindungi, Volley digunakan karena lebih cepat dari HttpURLConnection dan menghemat waktu. Selain itu Volley juga lebih mudah digunakan dan lebih sederhana.
 
 ## Screenshot aplikasi
 <!-- show all pictures from screenshots/ -->
