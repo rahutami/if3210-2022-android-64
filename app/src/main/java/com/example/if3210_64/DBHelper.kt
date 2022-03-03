@@ -94,8 +94,10 @@ class DBHelper(context: Context, factory: SQLiteDatabase.CursorFactory?) :
     fun deleteBookmark(faskes: Faskes): Cursor?{
         val db = this.readableDatabase
         val query = "DELETE FROM " + TABLE_NAME + " WHERE " + ID_COL + " = " + faskes.id
+        val result =  db.rawQuery(query, null)
         println(query)
-        return db.rawQuery(query, null)
+        println(result.count)
+        return result
     }
 
     fun checkDuplicate(faskes: Faskes) : Boolean{

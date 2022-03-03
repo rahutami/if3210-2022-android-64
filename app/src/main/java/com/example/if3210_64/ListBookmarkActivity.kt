@@ -35,7 +35,6 @@ class ListBookmarkActivity : AppCompatActivity() {
 
         })
         bookmarkRecyclerView.adapter = adapter
-        db = DBHelper(this, null)
         fetchBookmark()
         if(faskesArray.size > 0){
             val warningBookmark = findViewById<TextView>(R.id.warning_bookmark)
@@ -43,8 +42,18 @@ class ListBookmarkActivity : AppCompatActivity() {
         }
     }
 
+    override fun onResume() {
+        fetchBookmark()
+        if(faskesArray.size > 0){
+            val warningBookmark = findViewById<TextView>(R.id.warning_bookmark)
+            warningBookmark.setVisibility(View.GONE)
+        }
+        super.onResume()
+    }
+
     @SuppressLint("Range")
     fun fetchBookmark(){
+        faskesArray.clear()
         val cursor = db.getBookmark()
 
         if (cursor != null) {
@@ -83,6 +92,8 @@ class ListBookmarkActivity : AppCompatActivity() {
             val jenis_faskes = cursor.getString(cursor.getColumnIndex(DBHelper.TIPE_COl))
             val kelas_rs = cursor.getString(cursor.getColumnIndex(DBHelper.KELAS_COL))
             val status = cursor.getString(cursor.getColumnIndex(DBHelper.STATUS_COL))
+
+            println("${id} ${nama}")
 
             faskesArray.add(Faskes(id, kode, nama, kota, provinsi, alamat, latitude, longitude, telp, jenis_faskes, kelas_rs, status))
         }

@@ -84,12 +84,14 @@ class DetailFaskesActivity : AppCompatActivity() {
             bookmarkBtn.text = "+ Bookmark"
             bookmarkBtn.setBackgroundResource(R.color.bookmark)
             return
+        } else {
+            db.addBokmark(faskes)
+            Toast.makeText(this, faskes.nama + " telah ditambahkan ke bookmark", Toast.LENGTH_LONG).show()
+            val bookmarkBtn = findViewById<Button>(R.id.bookmark_btn)
+            bookmarkBtn.text = "- Hapus Bookmark"
+            bookmarkBtn.setBackgroundResource(R.color.unbookmark)
         }
-        db.addBokmark(faskes)
-        Toast.makeText(this, faskes.nama + " telah ditambahkan ke bookmark", Toast.LENGTH_LONG).show()
-        val bookmarkBtn = findViewById<Button>(R.id.bookmark_btn)
-        bookmarkBtn.text = "- Hapus Bookmark"
-        bookmarkBtn.setBackgroundResource(R.color.unbookmark)
+        bookmarked = !bookmarked
     }
 
     fun onClickMap(view: View){
