@@ -3,11 +3,34 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
-        <entry key="..\:/cool_yeah/Year-3/VI/IF3210 PBD/Tubes 1/if3210-2022-android-64/app/src/main/res/drawable/ic_android_black_24dp.xml" value="0.176" />
-        <entry key="..\:/cool_yeah/Year-3/VI/IF3210 PBD/Tubes 1/if3210-2022-android-64/app/src/main/res/layout/activity_main.xml" value="0.14" />
+        <entry key="..\:/Users/USER/Documents/pertubesan/android/app/src/main/res/drawable/card_border.xml" value="0.3505" />
+        <entry key="..\:/Users/USER/Documents/pertubesan/android/app/src/main/res/drawable/check_sign.xml" value="0.3505" />
+        <entry key="..\:/Users/USER/Documents/pertubesan/android/app/src/main/res/drawable/ic_android_black_24dp.xml" value="0.176" />
+        <entry key="..\:/Users/USER/Documents/pertubesan/android/app/src/main/res/layout/activity_daftar_faskes.xml" value="0.2033195020746888" />
+        <entry key="..\:/Users/USER/Documents/pertubesan/android/app/src/main/res/layout/activity_detail_faskes.xml" value="0.33" />
+        <entry key="..\:/Users/USER/Documents/pertubesan/android/app/src/main/res/layout/activity_faskes_list.xml" value="0.21" />
+        <entry key="..\:/Users/USER/Documents/pertubesan/android/app/src/main/res/layout/activity_faskes_list2.xml" value="1.25" />
+        <entry key="..\:/Users/USER/Documents/pertubesan/android/app/src/main/res/layout/activity_main.xml" value="0.14" />
+        <entry key="..\:/Users/USER/Documents/pertubesan/android/app/src/main/res/layout/card_layout.xml" value="0.1" />
+        <entry key="..\:/Users/USER/Documents/pertubesan/android/app/src/main/res/layout/faskes_card.xml" value="0.35104166666666664" />
+        <entry key="..\:/Users/USER/Documents/pertubesan/android/app/src/main/res/layout/item_view.xml" value="0.2" />
+        <entry key="..\:/Users/USER/Documents/pertubesan/android/app/src/main/res/layout/list.xml" value="0.1671875" />
+        <entry key="..\:/Users/USER/Documents/pertubesan/android/app/src/main/res/menu/bottom_nav_menu.xml" value="0.35104166666666664" />
+        <entry key="..\:/cool_yeah/Year-3/VI/IF3210 PBD/Tubes 1/if3210-2022-android-64/app/src/main/res/drawable/ic_android_black_24dp.xml" value="0.205" />
+        <entry key="..\:/cool_yeah/Year-3/VI/IF3210 PBD/Tubes 1/if3210-2022-android-64/app/src/main/res/drawable/ic_landing_page.xml" value="0.18" />
+        <entry key="..\:/cool_yeah/Year-3/VI/IF3210 PBD/Tubes 1/if3210-2022-android-64/app/src/main/res/drawable/ic_launcher.xml" value="0.205" />
+        <entry key="..\:/cool_yeah/Year-3/VI/IF3210 PBD/Tubes 1/if3210-2022-android-64/app/src/main/res/layout/activity_daftar_faskes.xml" value="0.18" />
+        <entry key="..\:/cool_yeah/Year-3/VI/IF3210 PBD/Tubes 1/if3210-2022-android-64/app/src/main/res/layout/activity_dashboard.xml" value="0.1" />
+        <entry key="..\:/cool_yeah/Year-3/VI/IF3210 PBD/Tubes 1/if3210-2022-android-64/app/src/main/res/layout/activity_detail_faskes.xml" value="0.1897644927536232" />
+        <entry key="..\:/cool_yeah/Year-3/VI/IF3210 PBD/Tubes 1/if3210-2022-android-64/app/src/main/res/layout/activity_main.xml" value="0.1897644927536232" />
+        <entry key="..\:/cool_yeah/Year-3/VI/IF3210 PBD/Tubes 1/if3210-2022-android-64/app/src/main/res/layout/article_layout.xml" value="0.1" />
         <entry key="..\:/cool_yeah/Year-3/VI/IF3210 PBD/Tubes 1/if3210-2022-android-64/app/src/main/res/layout/card_layout.xml" value="0.1" />
-        <entry key="..\:/cool_yeah/Year-3/VI/IF3210 PBD/Tubes 1/if3210-2022-android-64/app/src/main/res/layout/item_view.xml" value="0.2" />
-        <entry key="..\:/cool_yeah/Year-3/VI/IF3210 PBD/Tubes 1/if3210-2022-android-64/app/src/main/res/layout/list.xml" value="0.1671875" />
+        <entry key="..\:/cool_yeah/Year-3/VI/IF3210 PBD/Tubes 1/if3210-2022-android-64/app/src/main/res/layout/faskes_card.xml" value="0.1897644927536232" />
+        <entry key="..\:/cool_yeah/Year-3/VI/IF3210 PBD/Tubes 1/if3210-2022-android-64/app/src/main/res/layout/fragment_dashboard.xml" value="0.1897644927536232" />
+        <entry key="..\:/cool_yeah/Year-3/VI/IF3210 PBD/Tubes 1/if3210-2022-android-64/app/src/main/res/layout/fragment_home.xml" value="0.1897644927536232" />
+        <entry key="..\:/cool_yeah/Year-3/VI/IF3210 PBD/Tubes 1/if3210-2022-android-64/app/src/main/res/layout/fragment_news_article.xml" value="0.20010422094841063" />
+        <entry key="..\:/cool_yeah/Year-3/VI/IF3210 PBD/Tubes 1/if3210-2022-android-64/app/src/main/res/layout/fragment_notifications.xml" value="0.1897644927536232" />
+        <entry key="..\:/cool_yeah/Year-3/VI/IF3210 PBD/Tubes 1/if3210-2022-android-64/app/src/main/res/layout/news_activity.xml" value="0.1897644927536232" />
       </map>
     </option>
   </component>

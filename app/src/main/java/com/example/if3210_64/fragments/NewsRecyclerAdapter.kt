@@ -9,11 +9,11 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 
-class RecyclerAdapter(private var listener: NewsItemClicked): RecyclerView.Adapter<RecyclerAdapter.ViewHolder>() {
+class NewsRecyclerAdapter(private var listener: NewsItemFrClicked): RecyclerView.Adapter<NewsRecyclerAdapter.ViewHolder>() {
 
     private var items: ArrayList<News> = ArrayList()
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerAdapter.ViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): NewsRecyclerAdapter.ViewHolder {
         val v = LayoutInflater.from(parent.context).inflate(R.layout.card_layout,parent,false)
         val viewHolder = ViewHolder(v)
         v.setOnClickListener{
@@ -22,7 +22,7 @@ class RecyclerAdapter(private var listener: NewsItemClicked): RecyclerView.Adapt
         return viewHolder
     }
 
-    override fun onBindViewHolder(holder: RecyclerAdapter.ViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: NewsRecyclerAdapter.ViewHolder, position: Int) {
         val currItem = items[position]
         holder.itemTitle.text = currItem.title
         holder.itemDetail.text = currItem.date
@@ -49,6 +49,6 @@ class RecyclerAdapter(private var listener: NewsItemClicked): RecyclerView.Adapt
 
 }
 
-interface NewsItemClicked {
+interface NewsItemFrClicked {
     fun onItemClicked(item: News)
 }
