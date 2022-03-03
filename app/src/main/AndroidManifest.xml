@@ -20,6 +20,13 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity
+            android:name=".DetailFaskesActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ListFaskesActivity"
+            android:exported="true">
+        </activity>
     </application>
 
 </manifest>

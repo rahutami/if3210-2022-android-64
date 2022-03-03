@@ -7,4 +7,9 @@
     <color name="teal_700">#FF018786</color>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+    <color name="rsColor">#C24CCA</color>
+    <color name="puskesmasColor">#4C76CA</color>
+    <color name="kkpColor">#CA4C69</color>
+    <color name="klinikColor">#CABD4C</color>
+    <color name="otherColor">#63CA4C</color>
 </resources>
