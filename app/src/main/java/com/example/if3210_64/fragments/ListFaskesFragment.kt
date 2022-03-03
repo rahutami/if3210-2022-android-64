@@ -277,18 +277,14 @@ class ListFaskesFragment : Fragment(), View.OnClickListener {
                     faskesArray[position] as ArrayList<out Parcelable>
                 )
 
-                /*// Change the fragment
-                val fragment = DetailFaskesFragment()
-                fragment.arguments = bundle
-                val fr = requireActivity().supportFragmentManager.beginTransaction()
-                fr.replace(R.id.fragment_container,fragment)
-                fr.addToBackStack(null)
-                fr.commit()*/
-
-
-                //val intent = Intent(@ListFaskesActivity, DetailFaskesActivity::class.java)
-                //intent.putExtra("faskes", faskesArray[position])
-                //startActivity(intent)
+                // Change the fragment to DetailFaskesFragment
+                val fragmentManager: FragmentManager = requireActivity().supportFragmentManager
+                val fragmentTransaction: FragmentTransaction = fragmentManager.beginTransaction()
+                val detailFaskesFragment = DetailFaskesFragment()
+                detailFaskesFragment.arguments = bundle
+                fragmentTransaction.replace(R.id.fragment_container, detailFaskesFragment)
+                fragmentTransaction.addToBackStack(null)
+                fragmentTransaction.commit()
             }
 
         })
