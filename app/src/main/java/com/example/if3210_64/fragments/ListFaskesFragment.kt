@@ -3,7 +3,6 @@ package com.example.if3210_64.fragments
 import android.Manifest
 import android.content.pm.PackageManager
 import android.os.Bundle
-import android.os.Parcelable
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -16,8 +15,10 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.android.volley.Request
 import com.android.volley.toolbox.JsonObjectRequest
-import com.bumptech.glide.Glide.init
-import com.example.if3210_64.*
+import com.example.if3210_64.Faskes
+import com.example.if3210_64.FaskesRecyclerAdapter
+import com.example.if3210_64.MySingleton
+import com.example.if3210_64.R
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
 import kotlin.math.acos
@@ -145,7 +146,7 @@ class ListFaskesFragment : Fragment() {
                 }
 
                 val arrayAdapter =
-                    ArrayAdapter(requireContext(), R.layout.province_item, kabupatens)
+                    ArrayAdapter(view.context, R.layout.province_item, kabupatens)
                 view.findViewById<AutoCompleteTextView>(R.id.autoCompleteKabupaten)
                     .setAdapter(arrayAdapter)
             },
@@ -172,7 +173,7 @@ class ListFaskesFragment : Fragment() {
                     provinces.add(provinceJsonObject.getString("key"))
                 }
 
-                val arrayAdapter = ArrayAdapter(requireContext(), R.layout.province_item, provinces)
+                val arrayAdapter = ArrayAdapter(view.context, R.layout.province_item, provinces)
                 view.findViewById<AutoCompleteTextView>(R.id.autoCompleteProvince)
                     .setAdapter(arrayAdapter)
             },
@@ -225,12 +226,12 @@ class ListFaskesFragment : Fragment() {
         val view: View = inflater.inflate(R.layout.fragment_list_faskes, container, false)
 
 //            adapter province
-        val arrayAdapter = ArrayAdapter(requireContext(), R.layout.province_item, provinces)
+        val arrayAdapter = ArrayAdapter(view.context, R.layout.province_item, provinces)
         view.findViewById<AutoCompleteTextView>(R.id.autoCompleteProvince).setAdapter(arrayAdapter)
 
 //            adapter kabupaten
         val arrayAdapter2 =
-            ArrayAdapter(requireContext(), R.layout.province_item, com.example.if3210_64.kabupaten)
+            ArrayAdapter(view.context, R.layout.province_item, com.example.if3210_64.kabupaten)
         view.findViewById<AutoCompleteTextView>(R.id.autoCompleteKabupaten)
             .setAdapter(arrayAdapter2)
         // onclick listener stuff
@@ -301,5 +302,15 @@ class ListFaskesFragment : Fragment() {
         //        Location stuff
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(requireActivity())
         getLastKnownLocation()
+    }
+
+    override fun onResume() {
+        val arrayAdapter =
+            view?.let { ArrayAdapter(it.context, R.layout.province_item, kabupatens) }
+        view?.findViewById<AutoCompleteTextView>(R.id.autoCompleteKabupaten)
+            ?.setAdapter(arrayAdapter)
+
+        adapter?.updateFaskes(faskesArray)
+        super.onResume()
     }
 }

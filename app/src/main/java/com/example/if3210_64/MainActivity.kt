@@ -20,4 +20,8 @@ class MainActivity : AppCompatActivity() {
         }, 3000)
 
     }
+    override fun onRestoreInstanceState(savedInstanceState: Bundle) {
+        super.onRestoreInstanceState(savedInstanceState!!)
+        onCreate(savedInstanceState)
+    }
 }
