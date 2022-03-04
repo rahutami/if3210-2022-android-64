@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".ListFaskesActivity">
+
+        <TextView
+            android:id="@+id/pilih_province"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:labelFor="@+id/autoCompleteTextView"
+            android:paddingHorizontal="10dp"
+            android:paddingVertical="10dp"
+            android:text="Pilih Provinsi"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/textInputProvince"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
+            android:layout_width="250dp"
+            android:layout_height="60dp"
+            android:layout_centerInParent="true"
+            android:paddingHorizontal="10dp"
+
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/pilih_province">
+
+            <AutoCompleteTextView
+                android:id="@+id/autoCompleteProvince"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:inputType="none"
+                tools:text="Provinsi" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <Button
+            android:id="@+id/btnProvince"
+            android:layout_width="140dp"
+            android:layout_height="wrap_content"
+            android:text="Cari\nKabupaten"
+            app:layout_constraintStart_toStartOf="@+id/textInputProvince"
+            app:layout_constraintTop_toBottomOf="@+id/textInputProvince"
+            app:layout_constraintEnd_toEndOf="@+id/textInputProvince"
+            />
+
+        <TextView
+            android:layout_marginTop="20dp"
+            android:id="@+id/pilih_kabupaten"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:labelFor="@+id/autoCompleteTextView3"
+            android:paddingHorizontal="10dp"
+            android:paddingVertical="10dp"
+            android:text="Pilih Kabupaten"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/btnProvince" />
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/textInputKabupaten"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
+            android:layout_width="250dp"
+            android:layout_height="60dp"
+            android:paddingHorizontal="10dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/pilih_kabupaten">
+            layout
+
+            <AutoCompleteTextView
+                android:id="@+id/autoCompleteKabupaten"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:inputType="none"
+                tools:text="Kabupaten" />
+        </com.google.android.material.textfield.TextInputLayout>
+        <Button
+            android:id="@+id/btnKabupaten"
+            android:layout_width="140dp"
+            android:layout_height="wrap_content"
+            android:text="Cari\nFaskes"
+            app:layout_constraintEnd_toEndOf="@+id/textInputKabupaten"
+            app:layout_constraintStart_toStartOf="@+id/textInputKabupaten"
+            app:layout_constraintTop_toBottomOf="@+id/textInputKabupaten"
+
+            />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/faskesRecyclerView"
+            android:layout_width="450dp"
+            android:layout_height="match_parent"
+            android:padding="20dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/textInputKabupaten"
+            app:layout_constraintTop_toTopOf="parent" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>
