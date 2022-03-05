@@ -28,20 +28,6 @@
             android:exported="false"
             android:configChanges="keyboardHidden|orientation|screenSize"/>
         <activity
-            android:name=".NewsActivity"
-            android:label="News"
-            android:configChanges="keyboardHidden|orientation|screenSize"/>
-        <activity
-            android:name=".WebView"
-            android:exported="false"
-            android:parentActivityName=".NewsActivity"
-            android:configChanges="keyboardHidden|orientation|screenSize"/>
-        <activity
-            android:name=".ListBookmarkActivity"
-            android:exported="false"
-            android:label="Daftar Bookmark Faskes"
-            android:configChanges="keyboardHidden|orientation|screenSize"/>
-        <activity
             android:name=".MainActivity"
             android:exported="true"
             android:configChanges="keyboardHidden|orientation|screenSize">
@@ -51,18 +37,6 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity
-            android:name=".DetailFaskesActivity"
-            android:exported="false"
-            android:label="Detail Faskes"
-            android:configChanges="keyboardHidden|orientation|screenSize"
-            />
-        <activity
-            android:name=".ListFaskesActivity"
-            android:exported="true"
-            android:label="Cari Fasilitas Kesehatan"
-            android:configChanges="keyboardHidden|orientation|screenSize"
-            />
         <activity android:name=".CheckIn" android:exported="true"
             android:configChanges="keyboardHidden|orientation|screenSize">
             <intent-filter>

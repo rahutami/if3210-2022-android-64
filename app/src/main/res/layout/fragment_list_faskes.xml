@@ -7,7 +7,7 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".ListFaskesActivity">
+        tools:context=".fragments..ListFaskesFragment">
 
         <TextView
             android:id="@+id/pilih_province"

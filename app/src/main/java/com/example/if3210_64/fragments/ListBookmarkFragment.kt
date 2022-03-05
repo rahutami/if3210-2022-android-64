@@ -1,7 +1,6 @@
 package com.example.if3210_64.fragments
 
 import android.annotation.SuppressLint
-import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -30,9 +29,19 @@ class ListBookmarkFragment : Fragment() {
         adapter = FaskesRecyclerAdapter()
         adapter!!.setOnItemClickListener(object : FaskesRecyclerAdapter.onItemClickListener {
             override fun onItemClick(position: Int) {
-                val intent = Intent(requireActivity(), DetailFaskesActivity::class.java)
-                intent.putExtra("faskes", faskesArray[position])
-                startActivity(intent)
+                // Use Bundle to exchange data between two fragments
+                val bundle = Bundle()
+                bundle.putSerializable(
+                    "faskes",
+                    faskesArray[position]
+                )
+
+                // Change the fragment
+                val fragment = DetailFaskesFragment()
+                fragment.arguments = bundle
+                val fr = requireActivity().supportFragmentManager.beginTransaction()
+                fr.replace(R.id.fragment_container,fragment)
+                fr.commit()
             }
 
         })
