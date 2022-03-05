@@ -68,9 +68,20 @@ class ListBookmarkFragment : Fragment() {
         adapter = FaskesRecyclerAdapter()
         adapter!!.setOnItemClickListener(object : FaskesRecyclerAdapter.onItemClickListener {
             override fun onItemClick(position: Int) {
-                val intent = Intent(requireActivity(), DetailFaskesActivity::class.java)
-                intent.putExtra("faskes", faskesArray[position])
-                startActivity(intent)
+                // Use Bundle to exchange data between two fragments
+                val bundle = Bundle()
+                bundle.putSerializable(
+                    "faskes",
+                    faskesArray[position]
+                )
+
+                // Change the fragment
+                val fragment = DetailFaskesFragment()
+                fragment.arguments = bundle
+                val fr = requireActivity().supportFragmentManager.beginTransaction()
+                fr.replace(R.id.fragment_container, fragment)
+                fr.addToBackStack(null)
+                fr.commit()
             }
 
         })
