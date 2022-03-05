@@ -24,15 +24,6 @@
         app:frameThickness="2dp"
         app:maskColor="#77000000" />
 
-    <Button
-        android:id="@+id/back_button"
-        android:layout_width="48dp"
-        android:layout_height="48dp"
-        android:text="@string/string"
-        android:translationX="50dp"
-        android:translationY="50dp"
-        app:cornerRadius="30dp" />
-
     <TextView
         android:id="@+id/temp_button"
         android:layout_width="116dp"

@@ -24,8 +24,9 @@ Aplikasi ini dapat:
     * Jika respon API sukses, maka akan muncul pop up berhasil atau gagal check in berdasarkan pesan QR code. Jika respon API gagal, maka akan muncul pesan error
 
 ## Library
-* News: Volley digunakan untuk melakukan fetch data dari API Berita PerluDilindungi, Volley digunakan karena lebih cepat dari HttpURLConnection dan menghemat waktu. Selain itu Volley juga lebih mudah digunakan dan lebih sederhana.
-* Check In: Library budiyev digunakan untuk melakukan setup scan QR code, mulai dari persiapan akses kamera hingga mengubah hasil QR code dalam bentuk string. Selain itu, digunakan juga library Retrofit untuk melakukan post ke API Server PerluDilindungi karena mudah dalam membangunnya serta dapat membuat code yang lebih terstruktur, baik dari API interface, kelas request dan response, serta API call dalam program utama.
+* Volley:  digunakan untuk melakukan fetch data dari API Berita PerluDilindungi, Volley digunakan karena lebih cepat dari HttpURLConnection dan menghemat waktu. Selain itu Volley juga lebih mudah digunakan dan lebih sederhana.
+* Budiyev: digunakan untuk melakukan setup scan QR code, mulai dari persiapan akses kamera hingga mengubah hasil QR code dalam bentuk string. Library Budiyev mudah untuk digunakan dan dapat langsung membaca QR code.
+* Retrofit: digunakan untuk melakukan post ke API Server PerluDilindungi karena mudah dalam membangunnya serta dapat membuat code yang lebih terstruktur, baik dari API interface, kelas request dan response, serta API call dalam program utama.
 
 ## Screenshot aplikasi
 <!-- show all pictures from screenshots/ -->
@@ -34,7 +35,9 @@ Aplikasi ini dapat:
 ![news_article.png](screenshots/news_article.png)
 ![search_faskes.png](screenshots/search_faskes.png)
 ![search_faskes_2.png](screenshots/search_faskes_2.png)
-![check_in.png](screenshots/check_in.png)
+![check_in.png](screenshots/checkin.png)
+![qrcode_berhasil.png](screenshots/qrcode_berhasil.png)
+![qrcode_gagal.png](screenshots/qrcode_gagal.png)
 ![bookmark0.png](screenshots/bookmark0.png)
 
 <!-- SEMUANYA DLM PNG YAGESYA -->
